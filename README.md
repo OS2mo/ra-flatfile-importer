@@ -4,9 +4,9 @@ SPDX-License-Identifier: MPL-2.0
 -->
 
 
-# OS2mo Data Models
+# RA Flatfile importer
 
-OS2mo data validation models powered by [pydantic](https://github.com/samuelcolvin/pydantic/#pydantic).
+OS2mo/LoRa flatfile importer.
 
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/) with the following strategy:
@@ -52,4 +52,3 @@ TODO: README section missing!
   - pydantic: [MIT](MIT.txt)
 
 This project uses [REUSE](https://reuse.software) for licensing. All licenses can be found in the [LICENSES folder](LICENSES/) of the project.
-
