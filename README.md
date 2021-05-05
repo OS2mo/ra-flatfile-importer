@@ -41,6 +41,20 @@ Arguments can be provided for `docker run`:
 ```
 docker run --rm ra-flatfile-importer lora schema --indent 4
 ```
+Which yields:
+```
+{
+    "title": "LoraFlatFileFormatModel",
+    "description": "Flatfile format for LoRa.\n\nMinimal valid example is {}.",
+    "type": "object",
+    "properties": {
+        "facetter": {
+           ...
+        },
+        ...
+    }
+}
+```
 
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/) with the following strategy:
