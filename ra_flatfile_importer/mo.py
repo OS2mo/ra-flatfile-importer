@@ -36,8 +36,7 @@ class MOFlatFileFormatModel(BaseModel):
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatModel:
     return cast(
-        MOFlatFileFormatModel,
-        model_validate_helper(MOFlatFileFormatModel, json_file)
+        MOFlatFileFormatModel, model_validate_helper(MOFlatFileFormatModel, json_file)
     )
 
 
