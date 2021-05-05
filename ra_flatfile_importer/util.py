@@ -25,12 +25,13 @@ def validate_url(ctx: click.Context, param: str, value: str) -> AnyHttpUrl:
 
 def takes_json_file(function):
     function = click.option(
-        '--json-file', 
-        help='JSON file of models to parse',
-        type=click.File('r'),
-        default=sys.stdin
+        "--json-file",
+        help="JSON file of models to parse",
+        type=click.File("r"),
+        default=sys.stdin,
     )(function)
     return function
+
 
 def model_validate_helper(model: BaseModel, json_file) -> BaseModel:
     try:
