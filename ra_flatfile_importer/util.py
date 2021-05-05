@@ -3,11 +3,13 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
-import sys
 import json
+import sys
 
 import click
-from pydantic import BaseModel, ValidationError, AnyHttpUrl
+from pydantic import AnyHttpUrl
+from pydantic import BaseModel
+from pydantic import ValidationError
 from pydantic.tools import parse_obj_as
 
 

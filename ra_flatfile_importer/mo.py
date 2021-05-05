@@ -6,17 +6,17 @@
 from typing import List
 
 import click
-from pydantic import BaseModel, AnyHttpUrl
-from ramodels.mo import (
-    OrganisationUnit,
-    Employee,
-    Engagement,
-    Address,
-    Manager,
-    EngagementAssociation,
-)
-
-from util import model_validate_helper, takes_json_file, validate_url
+from pydantic import AnyHttpUrl
+from pydantic import BaseModel
+from ramodels.mo import Address
+from ramodels.mo import Employee
+from ramodels.mo import Engagement
+from ramodels.mo import EngagementAssociation
+from ramodels.mo import Manager
+from ramodels.mo import OrganisationUnit
+from util import model_validate_helper
+from util import takes_json_file
+from util import validate_url
 
 
 class MOFlatFileFormatModel(BaseModel):

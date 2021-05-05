@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 import click
-
 from lora import lora
 from mo import mo
 

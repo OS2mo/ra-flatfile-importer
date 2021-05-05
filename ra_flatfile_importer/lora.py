@@ -6,10 +6,14 @@
 from typing import List
 
 import click
-from pydantic import BaseModel, AnyHttpUrl
-from ramodels.lora import Facet, Klasse, Organisation
-
-from util import model_validate_helper, takes_json_file, validate_url
+from pydantic import AnyHttpUrl
+from pydantic import BaseModel
+from ramodels.lora import Facet
+from ramodels.lora import Klasse
+from ramodels.lora import Organisation
+from util import model_validate_helper
+from util import takes_json_file
+from util import validate_url
 
 
 class LoraFlatFileFormatModel(BaseModel):
