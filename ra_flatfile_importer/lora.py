@@ -7,7 +7,7 @@ from typing import List
 
 import click
 from pydantic import BaseModel, AnyHttpUrl
-from os2models.lora import Facet, Klasse, Organisation
+from ramodels.lora import Facet, Klasse, Organisation
 
 from util import model_validate_helper, takes_json_file, validate_url
 
