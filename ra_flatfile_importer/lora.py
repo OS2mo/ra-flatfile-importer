@@ -28,7 +28,10 @@ class LoraFlatFileFormatModel(BaseModel):
 
 
 def lora_validate_helper(json_file) -> LoraFlatFileFormatModel:
-    return model_validate_helper(LoraFlatFileFormatModel, json_file)
+    return cast(
+        LoraFlatFileFormatModel,
+        model_validate_helper(LoraFlatFileFormatModel, json_file)
+    )
 
 
 @click.group()
@@ -68,4 +71,5 @@ def schema(indent: int) -> None:
 def upload(json_file, mox_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = lora_validate_helper(json_file)
+    print(flatfilemodel)
     # TODO: Upload it using Client

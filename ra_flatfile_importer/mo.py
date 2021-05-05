@@ -34,7 +34,10 @@ class MOFlatFileFormatModel(BaseModel):
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatModel:
-    return model_validate_helper(MOFlatFileFormatModel, json_file)
+    return cast(
+        MOFlatFileFormatModel,
+        model_validate_helper(MOFlatFileFormatModel, json_file)
+    )
 
 
 @click.group()
@@ -74,4 +77,5 @@ def schema(indent: int) -> None:
 def upload(json_file, mo_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
+    print(flatfilemodel)
     # TODO: Upload it using Client
