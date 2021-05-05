@@ -5,6 +5,8 @@
 # --------------------------------------------------------------------------------------
 from typing import cast
 from typing import List
+from typing import Optional
+from uuid import UUID
 
 import click
 from pydantic import AnyHttpUrl
@@ -73,8 +75,13 @@ def schema(indent: int) -> None:
     callback=validate_url,
     help="Address of the OS2mo host",
 )
+@click.option(
+    "--saml-token",
+    type=click.UUID,
+    help="Address of the OS2mo host",
+)
 @takes_json_file
-def upload(json_file, mo_url: AnyHttpUrl) -> None:
+def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
     print(flatfilemodel)
