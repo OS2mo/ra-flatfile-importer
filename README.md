@@ -8,6 +8,40 @@ SPDX-License-Identifier: MPL-2.0
 
 OS2mo/LoRa flatfile importer.
 
+## Usage
+```
+docker build . -t ra-flatfile-importer
+```
+Which yields:
+```
+...
+Successfully built ...
+Successfully tagged ra-flatfile-importer:latest
+```
+After which you can run:
+```
+docker run --rm ra-flatfile-importer
+```
+Which yields:
+```
+Usage: flatfile_importer.py [OPTIONS] COMMAND [ARGS]...
+
+  Flatfile importer.
+
+    Used to validate and load flatfile data (JSON) into OS2mo/LoRa.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    lora  Lora Flatfile importer.
+    mo    OS2mo Flatfile importer.
+```
+Arguments can be provided for `docker run`:
+```
+docker run --rm ra-flatfile-importer lora schema --indent 4
+```
+
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/) with the following strategy:
 - MAJOR: Incompatible changes to existing data models
