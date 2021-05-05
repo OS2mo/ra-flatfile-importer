@@ -17,6 +17,7 @@ class LoraFlatFileFormatModel(BaseModel):
 
     Minimal valid example is {}.
     """
+
     facetter: List[Facet] = []
     klasser: List[Klasse] = []
     organisationer: List[Organisation] = []
@@ -43,7 +44,9 @@ def validate(json_file) -> None:
 
 
 @lora.command()
-@click.option("--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None)
+@click.option(
+    "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
+)
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
     click.echo(LoraFlatFileFormatModel.schema_json(indent=indent))
@@ -51,7 +54,7 @@ def schema(indent: int) -> None:
 
 @lora.command()
 @click.option(
-    '--mox-url',
+    "--mox-url",
     default="http://localhost:8080",
     show_default=True,
     callback=validate_url,

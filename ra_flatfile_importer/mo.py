@@ -7,7 +7,14 @@ from typing import List
 
 import click
 from pydantic import BaseModel, AnyHttpUrl
-from ramodels.mo import OrganisationUnit, Employee, Engagement, Address, Manager, EngagementAssociation
+from ramodels.mo import (
+    OrganisationUnit,
+    Employee,
+    Engagement,
+    Address,
+    Manager,
+    EngagementAssociation,
+)
 
 from util import model_validate_helper, takes_json_file, validate_url
 
@@ -17,6 +24,7 @@ class MOFlatFileFormatModel(BaseModel):
 
     Minimal valid example is {}.
     """
+
     org_units: List[OrganisationUnit] = []
     employees: List[Employee] = []
     engagements: List[Engagement] = []
@@ -46,7 +54,9 @@ def validate(json_file) -> None:
 
 
 @mo.command()
-@click.option("--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None)
+@click.option(
+    "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
+)
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
     click.echo(MOFlatFileFormatModel.schema_json(indent=indent))
@@ -54,7 +64,7 @@ def schema(indent: int) -> None:
 
 @mo.command()
 @click.option(
-    '--mo-url',
+    "--mo-url",
     default="http://localhost:5000",
     show_default=True,
     callback=validate_url,

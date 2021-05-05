@@ -17,9 +17,10 @@ def cli() -> None:
     """
     pass
 
+
 cli.add_command(lora)
 cli.add_command(mo)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli(auto_envvar_prefix="FLATFILE_IMPORTER")
