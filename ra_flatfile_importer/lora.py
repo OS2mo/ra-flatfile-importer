@@ -31,7 +31,7 @@ class LoraFlatFileFormatModel(BaseModel):
 def lora_validate_helper(json_file) -> LoraFlatFileFormatModel:
     return cast(
         LoraFlatFileFormatModel,
-        model_validate_helper(LoraFlatFileFormatModel, json_file)
+        model_validate_helper(LoraFlatFileFormatModel, json_file),
     )
 
 
