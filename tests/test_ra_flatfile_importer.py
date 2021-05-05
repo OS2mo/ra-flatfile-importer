@@ -1,4 +1,4 @@
-from os2mo_flatfile_importer import __version__
+from ra_flatfile_importer import __version__
 
 
 def test_version():
