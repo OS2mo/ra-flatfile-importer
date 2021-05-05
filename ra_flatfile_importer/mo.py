@@ -7,7 +7,7 @@ from typing import List
 
 import click
 from pydantic import BaseModel, AnyHttpUrl
-from os2models.mo import OrganisationUnit, Employee, Engagement, Address, Manager, EngagementAssociation
+from ramodels.mo import OrganisationUnit, Employee, Engagement, Address, Manager, EngagementAssociation
 
 from util import model_validate_helper, takes_json_file, validate_url
 
