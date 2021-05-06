@@ -3,8 +3,11 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+import hashlib
 import json
 import sys
+from functools import lru_cache
+from uuid import UUID
 
 import click
 from pydantic import AnyHttpUrl
@@ -42,3 +45,16 @@ def model_validate_helper(model: BaseModel, json_file) -> BaseModel:
         raise click.ClickException("Unable to parse input file as JSON")
     except ValidationError as e:
         raise click.ClickException(e)
+
+
+@lru_cache(maxsize=None)
+def generate_uuid(seed: str) -> UUID:
+    """
+    Generate an UUID based on a seed in a deterministic way
+    This allows us generate the same uuid for objects across different imports,
+    without having to maintain a separate list of UUIDs, or fetch the relevant uuids
+    from MO
+    """
+    m = hashlib.md5()
+    m.update(seed.encode("utf-8"))
+    return UUID(m.hexdigest())
