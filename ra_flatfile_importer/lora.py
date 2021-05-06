@@ -5,17 +5,23 @@
 # --------------------------------------------------------------------------------------
 from typing import cast
 from typing import List
+from typing import Type
 
 import click
 from pydantic import AnyHttpUrl
 from pydantic import BaseModel
+from raclients.lora import ModelClient
+from ramodels.base import RABase
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
+from util import async_to_sync
 from util import generate_uuid
 from util import model_validate_helper
 from util import takes_json_file
 from util import validate_url
+
+LoraObj = Type[RABase]
 
 
 class LoraFlatFileFormatModel(BaseModel):
@@ -70,11 +76,20 @@ def schema(indent: int) -> None:
     help="Address of the MOX host",
 )
 @takes_json_file
-def upload(json_file, mox_url: AnyHttpUrl) -> None:
+@async_to_sync
+async def upload(json_file, mox_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = lora_validate_helper(json_file)
-    print(flatfilemodel)
-    # TODO: Upload it using Client
+    chunks = [
+        flatfilemodel.organisationer,
+        flatfilemodel.facetter,
+        flatfilemodel.klasser,
+    ]
+
+    client = ModelClient(base_url=mox_url)
+    async with client.context():
+        for objs in chunks:
+            await client.load_lora_objs(objs)
 
 
 @lora.command()

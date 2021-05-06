@@ -363,7 +363,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [[package]]
 name = "raclients"
-version = "0.1.0"
+version = "0.1.1"
 description = "Clients for OS2mo/LoRa"
 category = "main"
 optional = false
@@ -484,7 +484,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a4d7bc5cff95e31d8cf93a27b9a96a96821ae9935a67a48de26e0dec9ccb54a0"
+content-hash = "13a0cbac955002c7adf39d7d5d98ebb1ac2056bbdb6d2eb609013b8e14f9e6da"
 
 [metadata.files]
 aiohttp = [
@@ -765,8 +765,8 @@ pyyaml = [
     {file = "PyYAML-5.4.1.tar.gz", hash = "sha256:607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"},
 ]
 raclients = [
-    {file = "raclients-0.1.0-py3-none-any.whl", hash = "sha256:6545b682e980f1029b5fdfc6aded66d5cc219da9d0a9f5df78ee60967f2aa7b2"},
-    {file = "raclients-0.1.0.tar.gz", hash = "sha256:9b9a8de7389a67aff3aaf092eb6f1228b628ec86a9f92b15053cef7c4f78603e"},
+    {file = "raclients-0.1.1-py3-none-any.whl", hash = "sha256:9f52f579e15b9ab53516bc385e3067a93c6125d0d8f4eae513ec7da84e836e2e"},
+    {file = "raclients-0.1.1.tar.gz", hash = "sha256:42400e5265f1af2341bfaa9043516d65bbd94d0ff1d3818b41de4d83165c4075"},
 ]
 ramodels = [
     {file = "ramodels-0.3.1-py3-none-any.whl", hash = "sha256:2e60bc804ae22a6107a6d2d48b1de3c9f00cc40170853edb1d78090479b3facb"},
