@@ -10,30 +10,14 @@ from uuid import UUID
 
 import click
 from pydantic import AnyHttpUrl
-from pydantic import BaseModel
-from ramodels.mo import Address
-from ramodels.mo import Employee
-from ramodels.mo import Engagement
-from ramodels.mo import EngagementAssociation
-from ramodels.mo import Manager
-from ramodels.mo import OrganisationUnit
+from raclients.mo import ModelClient
+from util import async_to_sync
 from util import model_validate_helper
 from util import takes_json_file
 from util import validate_url
 
+from mo_flatfile_gen import MOFlatFileFormatModel, generate_mo_flatfile
 
-class MOFlatFileFormatModel(BaseModel):
-    """Flatfile format for OS2mo.
-
-    Minimal valid example is {}.
-    """
-
-    org_units: List[OrganisationUnit] = []
-    employees: List[Employee] = []
-    engagements: List[Engagement] = []
-    address: List[Address] = []
-    manager: List[Manager] = []
-    engagement_associations: List[EngagementAssociation] = []
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatModel:
@@ -81,8 +65,29 @@ def schema(indent: int) -> None:
     help="Address of the OS2mo host",
 )
 @takes_json_file
-def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
+@async_to_sync
+async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
-    print(flatfilemodel)
-    # TODO: Upload it using Client
+    chunks = [
+        flatfilemodel.org_units,
+        flatfilemodel.employees,
+        flatfilemodel.address,
+        flatfilemodel.engagements,
+        flatfilemodel.manager,
+        flatfilemodel.engagement_associations,
+    ]
+
+    client = ModelClient(base_url=mo_url, saml_token=saml_token)
+    async with client.context():
+        for objs in chunks:
+            await client.load_mo_objs(objs)
+
+
+@mo.command()
+@click.option(
+    "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
+)
+def generate(indent: int) -> None:
+    flatfile = generate_mo_flatfile()
+    click.echo(flatfile.json(indent=indent))
