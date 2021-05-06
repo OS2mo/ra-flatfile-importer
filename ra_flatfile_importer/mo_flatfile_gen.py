@@ -36,10 +36,9 @@ def generate_mo_flatfile():
             )
         ],
         employees = [
-            Employee.from_simplified_fields(
+            Employee(
                 uuid=UUID("1b0c7093-fd8d-45a8-8b46-5327ecbcd780"),
                 name="John Deere",
-                user_key="JD",
             )
         ],
         engagements = [],
@@ -47,3 +46,4 @@ def generate_mo_flatfile():
         manager = [],
         engagement_associations = [],
     )
+    return flatfile
