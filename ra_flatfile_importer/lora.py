@@ -3,26 +3,23 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+from functools import partial
 from typing import cast
-from typing import List
 from typing import Type
 
 import click
+from lora_flatfile_gen import generate_lora_flatfile
+from lora_flatfile_model import LoraFlatFileFormatModel
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
 from util import async_to_sync
-from util import generate_uuid
 from util import model_validate_helper
 from util import takes_json_file
 from util import validate_url
 
-from lora_flatfile_gen import LoraFlatFileFormatModel
-from lora_flatfile_gen import generate_lora_flatfile
-
 
 LoraObj = Type[RABase]
-
 
 
 def lora_validate_helper(json_file) -> LoraFlatFileFormatModel:
@@ -70,16 +67,14 @@ def schema(indent: int) -> None:
 async def upload(json_file, mox_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = lora_validate_helper(json_file)
-    chunks = [
-        flatfilemodel.organisationer,
-        flatfilemodel.facetter,
-        flatfilemodel.klasser,
-    ]
+    order = ["organisationer", "facetter", "klasser"]
+    ordered_objs = map(partial(getattr, flatfilemodel), order)
+    ordered_objs = filter(None, ordered_objs)
 
     client = ModelClient(base_url=mox_url)
     async with client.context():
-        for objs in chunks:
-            await client.load_lora_objs(objs)
+        for objs in ordered_objs:
+            print(await client.load_lora_objs(objs))
 
 
 @lora.command()

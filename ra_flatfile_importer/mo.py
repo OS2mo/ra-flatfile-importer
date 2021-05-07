@@ -3,21 +3,20 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+from functools import partial
 from typing import cast
-from typing import List
 from typing import Optional
 from uuid import UUID
 
 import click
+from mo_flatfile_gen import generate_mo_flatfile
+from mo_flatfile_model import MOFlatFileFormatModel
 from pydantic import AnyHttpUrl
 from raclients.mo import ModelClient
 from util import async_to_sync
 from util import model_validate_helper
 from util import takes_json_file
 from util import validate_url
-
-from mo_flatfile_gen import MOFlatFileFormatModel, generate_mo_flatfile
-
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatModel:
@@ -69,19 +68,21 @@ def schema(indent: int) -> None:
 async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
-    chunks = [
-        flatfilemodel.org_units,
-        flatfilemodel.employees,
-        flatfilemodel.address,
-        flatfilemodel.engagements,
-        flatfilemodel.manager,
-        flatfilemodel.engagement_associations,
+    order = [
+        "org_units",
+        "employees",
+        "address",
+        "engagements",
+        "manager",
+        "engagement_associations",
     ]
+    ordered_objs = map(partial(getattr, flatfilemodel), order)
+    ordered_objs = filter(None, ordered_objs)
 
     client = ModelClient(base_url=mo_url, saml_token=saml_token)
     async with client.context():
-        for objs in chunks:
-            await client.load_mo_objs(objs)
+        for objs in ordered_objs:
+            print(await client.load_mo_objs(objs))
 
 
 @mo.command()
