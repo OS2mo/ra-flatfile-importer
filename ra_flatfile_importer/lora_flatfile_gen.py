@@ -114,16 +114,18 @@ def generate_lora_flatfile(name: str, dummy_classes: bool = False) -> LoraFlatFi
         )
         facets.append(facet)
         for clazz in classes:
+            scope = "TEXT"
             if isinstance(clazz, tuple):
-                name, _, _ = clazz
+                user_key, title, scope = clazz
             else:
-                name = clazz
+                title = clazz
+                user_key = title
             klasse = Klasse.from_simplified_fields(
                 facet_uuid=facet.uuid,
-                uuid=generate_uuid(seed + name),
-                user_key=name,
-                title=name,
-                scope="TEXT",
+                uuid=generate_uuid(seed + user_key),
+                user_key=user_key,
+                title=title,
+                scope=scope,
                 organisation_uuid=org_uuid
             )
             klasses.append(klasse)
