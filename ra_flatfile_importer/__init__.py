@@ -5,7 +5,7 @@
 # --------------------------------------------------------------------------------------
 from typing import List
 
-from semantic_version_type import SemanticVersion
+from ra_flatfile_importer.semantic_version_type import SemanticVersion
 
 __version__: SemanticVersion = "0.1.0"
 
