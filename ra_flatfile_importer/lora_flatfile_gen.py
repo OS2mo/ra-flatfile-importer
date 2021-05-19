@@ -8,7 +8,8 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from lora_flatfile_model import LoraFlatFileFormat, LoraFlatFileFormatChunk
+from lora_flatfile_model import LoraFlatFileFormat
+from lora_flatfile_model import LoraFlatFileFormatChunk
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
@@ -131,7 +132,9 @@ def generate_lora_flatfile(
     name: str, dummy_classes: bool = False
 ) -> LoraFlatFileFormat:
     seed = name
-    generate_uuid = lambda identifier: unseeded_generate_uuid(seed + identifier)
+
+    def generate_uuid(identifier):
+        return unseeded_generate_uuid(seed + identifier)
 
     organisation = Organisation.from_simplified_fields(
         uuid=generate_uuid(""),
@@ -166,15 +169,11 @@ def generate_lora_flatfile(
 
     flatfile = LoraFlatFileFormat(
         chunks=[
-            LoraFlatFileFormatChunk(
-                organisation=organisation
-            ),
+            LoraFlatFileFormatChunk(organisation=organisation),
             LoraFlatFileFormatChunk(
                 facetter=facets,
             ),
-            LoraFlatFileFormatChunk(
-                klasser=klasses
-            ),
+            LoraFlatFileFormatChunk(klasser=klasses),
         ],
         version=__lora_fileformat_version__,
     )

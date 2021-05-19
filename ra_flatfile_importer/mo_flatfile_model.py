@@ -6,11 +6,12 @@
 from itertools import chain
 from typing import Iterator
 from typing import List
+from typing import Literal
 from typing import Optional
 from typing import Type
-from typing import Literal
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, validator
+from pydantic import Extra
 from ramodels.base import RABase
 from ramodels.mo import Address
 from ramodels.mo import Employee
@@ -19,7 +20,8 @@ from ramodels.mo import EngagementAssociation
 from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
 
-from ra_flatfile_importer import __mo_fileformat_version__
+from semantic_version_type import SemanticVersion
+from ra_flatfile_importer import __supported_mo_fileformat_versions__
 
 # TODO: Change to from ramodels.mo import MOBase
 MOBase = Type[RABase]
@@ -60,7 +62,13 @@ class MOFlatFileFormat(BaseModel):
         extra = Extra.forbid
 
     chunks: List[MOFlatFileFormatChunk]
-    version: Literal[__mo_fileformat_version__]
+    version: SemanticVersion
+
+    @validator('version', pre=True, always=True)
+    def check_version(cls, v):
+        if v not in __supported_mo_fileformat_versions__:
+            raise ValueError('fileformat version not supported')
+        return v
 
     def __iter__(self):
         return iter(self.__root__)

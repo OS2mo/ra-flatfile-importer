@@ -6,7 +6,6 @@
 from typing import cast
 from typing import Optional
 from uuid import UUID
-import aiohttp
 
 import click
 from mo_flatfile_gen import generate_mo_flatfile
@@ -21,9 +20,7 @@ from util import validate_url
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormat:
-    return cast(
-        MOFlatFileFormat, model_validate_helper(MOFlatFileFormat, json_file)
-    )
+    return cast(MOFlatFileFormat, model_validate_helper(MOFlatFileFormat, json_file))
 
 
 @click.group()

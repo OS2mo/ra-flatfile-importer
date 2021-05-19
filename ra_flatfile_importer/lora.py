@@ -3,13 +3,13 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
-from functools import partial
 from typing import cast
 from typing import Type
 
 import click
 from lora_flatfile_gen import generate_lora_flatfile
-from lora_flatfile_model import LoraFlatFileFormat, concat_chunk
+from lora_flatfile_model import concat_chunk
+from lora_flatfile_model import LoraFlatFileFormat
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
