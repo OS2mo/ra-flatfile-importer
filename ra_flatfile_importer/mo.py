@@ -3,14 +3,14 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
-from functools import partial
 from typing import cast
 from typing import Optional
 from uuid import UUID
 
 import click
 from mo_flatfile_gen import generate_mo_flatfile
-from mo_flatfile_model import MOFlatFileFormatModel
+from mo_flatfile_model import concat_chunk
+from mo_flatfile_model import MOFlatFileFormat
 from pydantic import AnyHttpUrl
 from raclients.mo import ModelClient
 from util import async_to_sync
@@ -19,10 +19,8 @@ from util import takes_json_file
 from util import validate_url
 
 
-def mo_validate_helper(json_file) -> MOFlatFileFormatModel:
-    return cast(
-        MOFlatFileFormatModel, model_validate_helper(MOFlatFileFormatModel, json_file)
-    )
+def mo_validate_helper(json_file) -> MOFlatFileFormat:
+    return cast(MOFlatFileFormat, model_validate_helper(MOFlatFileFormat, json_file))
 
 
 @click.group()
@@ -47,7 +45,7 @@ def validate(json_file) -> None:
 )
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
-    click.echo(MOFlatFileFormatModel.schema_json(indent=indent))
+    click.echo(MOFlatFileFormat.schema_json(indent=indent))
 
 
 @mo.command()
@@ -68,27 +66,24 @@ def schema(indent: int) -> None:
 async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
-    order = [
-        "org_units",
-        "employees",
-        "address",
-        "engagements",
-        "manager",
-        "engagement_associations",
-    ]
-    ordered_objs = map(partial(getattr, flatfilemodel), order)
-    ordered_objs = filter(None, ordered_objs)
 
     client = ModelClient(base_url=mo_url, saml_token=saml_token)
     async with client.context():
-        for objs in ordered_objs:
-            print(await client.load_mo_objs(objs))
+        for chunk in flatfilemodel:
+            objs = list(concat_chunk(chunk))
+            if objs:
+                print(await client.load_mo_objs(objs))
 
 
 @mo.command()
 @click.option(
+    "--name",
+    help="Name of the root organization",
+    required=True,
+)
+@click.option(
     "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
 )
-def generate(indent: int) -> None:
-    flatfile = generate_mo_flatfile()
+def generate(name: str, indent: int) -> None:
+    flatfile = generate_mo_flatfile(name)
     click.echo(flatfile.json(indent=indent))
