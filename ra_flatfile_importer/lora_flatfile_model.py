@@ -6,17 +6,19 @@
 from itertools import chain
 from typing import Iterator
 from typing import List
+from typing import Literal
 from typing import Optional
 from typing import Type
-from typing import Literal
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, validator
+from pydantic import Extra
 from ramodels.base import RABase
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 
-from ra_flatfile_importer import __lora_fileformat_version__
+from semantic_version_type import SemanticVersion
+from ra_flatfile_importer import __supported_lora_fileformat_versions__
 
 # TODO: Change to from ramodels.mo import MOBase
 LoraBase = Type[RABase]
@@ -54,7 +56,13 @@ class LoraFlatFileFormat(BaseModel):
         extra = Extra.forbid
 
     chunks: List[LoraFlatFileFormatChunk]
-    version: Literal[__lora_fileformat_version__]
+    version: SemanticVersion
+
+    @validator('version', pre=True, always=True)
+    def check_version(cls, v):
+        if v not in __supported_lora_fileformat_versions__:
+            raise ValueError('fileformat version not supported')
+        return v
 
     def __iter__(self):
         return iter(self.chunks)
