@@ -8,12 +8,15 @@ from typing import Iterator
 from typing import List
 from typing import Optional
 from typing import Type
+from typing import Literal
 
 from pydantic import BaseModel, Extra
 from ramodels.base import RABase
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
+
+from ra_flatfile_importer import __lora_fileformat_version__
 
 # TODO: Change to from ramodels.mo import MOBase
 LoraBase = Type[RABase]
@@ -50,13 +53,14 @@ class LoraFlatFileFormat(BaseModel):
         frozen = True
         extra = Extra.forbid
 
-    __root__: List[LoraFlatFileFormatChunk]
+    chunks: List[LoraFlatFileFormatChunk]
+    version: Literal[__lora_fileformat_version__]
 
     def __iter__(self):
-        return iter(self.__root__)
+        return iter(self.chunks)
 
     def __getitem__(self, item):
-        return self.__root__[item]
+        return self.chunks[item]
 
 
 def concat_chunk(chunk: LoraFlatFileFormatChunk) -> Iterator[LoraBase]:

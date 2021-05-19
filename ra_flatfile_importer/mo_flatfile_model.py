@@ -8,6 +8,7 @@ from typing import Iterator
 from typing import List
 from typing import Optional
 from typing import Type
+from typing import Literal
 
 from pydantic import BaseModel, Extra
 from ramodels.base import RABase
@@ -17,6 +18,8 @@ from ramodels.mo import Engagement
 from ramodels.mo import EngagementAssociation
 from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
+
+from ra_flatfile_importer import __mo_fileformat_version__
 
 # TODO: Change to from ramodels.mo import MOBase
 MOBase = Type[RABase]
@@ -56,7 +59,8 @@ class MOFlatFileFormat(BaseModel):
         frozen = True
         extra = Extra.forbid
 
-    __root__: List[MOFlatFileFormatChunk]
+    chunks: List[MOFlatFileFormatChunk]
+    version: Literal[__mo_fileformat_version__]
 
     def __iter__(self):
         return iter(self.__root__)
