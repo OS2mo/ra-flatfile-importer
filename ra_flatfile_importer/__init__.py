@@ -4,3 +4,5 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 __version__ = "0.1.0"
+__lora_fileformat_version__ = "0.1.0"
+__mo_fileformat_version__ = "0.1.0"

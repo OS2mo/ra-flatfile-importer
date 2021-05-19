@@ -14,6 +14,8 @@ from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 from util import generate_uuid as unseeded_generate_uuid
 
+from ra_flatfile_importer import __lora_fileformat_version__
+
 
 CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
     "engagement_job_function": [
@@ -162,15 +164,18 @@ def generate_lora_flatfile(
             )
             klasses.append(klasse)
 
-    flatfile = LoraFlatFileFormat(__root__=[
-        LoraFlatFileFormatChunk(
-            organisation=organisation
-        ),
-        LoraFlatFileFormatChunk(
-            facetter=facets,
-        ),
-        LoraFlatFileFormatChunk(
-            klasser=klasses
-        ),
-    ])
+    flatfile = LoraFlatFileFormat(
+        chunks=[
+            LoraFlatFileFormatChunk(
+                organisation=organisation
+            ),
+            LoraFlatFileFormatChunk(
+                facetter=facets,
+            ),
+            LoraFlatFileFormatChunk(
+                klasser=klasses
+            ),
+        ],
+        version=__lora_fileformat_version__,
+    )
     return flatfile
