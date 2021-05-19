@@ -8,11 +8,11 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from lora_flatfile_model import LoraFlatFileFormatModel
+from lora_flatfile_model import LoraFlatFileFormat, LoraFlatFileFormatChunk
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
-from util import generate_uuid
+from util import generate_uuid as unseeded_generate_uuid
 
 
 CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
@@ -121,16 +121,18 @@ CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
         ("primary", "Primær", "3000"),
         ("non-primary", "Ikke-primær ansættelse", "0"),
     ],
+    "org_unit_hierarchy": [],
 }
 
 
 def generate_lora_flatfile(
     name: str, dummy_classes: bool = False
-) -> LoraFlatFileFormatModel:
+) -> LoraFlatFileFormat:
     seed = name
-    org_uuid = generate_uuid(seed)
+    generate_uuid = lambda identifier: unseeded_generate_uuid(seed + identifier)
+
     organisation = Organisation.from_simplified_fields(
-        uuid=org_uuid,
+        uuid=generate_uuid(""),
         name=name,
         user_key=name,
     )
@@ -138,9 +140,9 @@ def generate_lora_flatfile(
     klasses = []
     for facetbvn, classes in CLASSES.items():
         facet = Facet.from_simplified_fields(
-            uuid=generate_uuid(seed + facetbvn),
+            uuid=generate_uuid(facetbvn),
             user_key=facetbvn,
-            organisation_uuid=org_uuid,
+            organisation_uuid=organisation.uuid,
         )
         facets.append(facet)
         for clazz in classes:
@@ -152,15 +154,23 @@ def generate_lora_flatfile(
                 user_key = title
             klasse = Klasse.from_simplified_fields(
                 facet_uuid=facet.uuid,
-                uuid=generate_uuid(seed + user_key),
+                uuid=generate_uuid(user_key),
                 user_key=user_key,
                 title=title,
                 scope=scope,
-                organisation_uuid=org_uuid,
+                organisation_uuid=organisation.uuid,
             )
             klasses.append(klasse)
 
-    flatfile = LoraFlatFileFormatModel(
-        facetter=facets, klasser=klasses, organisation=organisation
-    )
+    flatfile = LoraFlatFileFormat(__root__=[
+        LoraFlatFileFormatChunk(
+            organisation=organisation
+        ),
+        LoraFlatFileFormatChunk(
+            facetter=facets,
+        ),
+        LoraFlatFileFormatChunk(
+            klasser=klasses
+        ),
+    ])
     return flatfile
