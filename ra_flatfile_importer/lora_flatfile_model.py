@@ -17,8 +17,8 @@ from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 
-from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer import __supported_lora_fileformat_versions__
+from ra_flatfile_importer.semantic_version_type import SemanticVersion
 
 # TODO: Change to from ramodels.mo import MOBase
 LoraBase = Type[RABase]
