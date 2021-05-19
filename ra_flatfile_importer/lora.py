@@ -9,7 +9,7 @@ from typing import Type
 
 import click
 from lora_flatfile_gen import generate_lora_flatfile
-from lora_flatfile_model import LoraFlatFileFormatModel
+from lora_flatfile_model import LoraFlatFileFormat, concat_chunk
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
@@ -22,10 +22,10 @@ from util import validate_url
 LoraObj = Type[RABase]
 
 
-def lora_validate_helper(json_file) -> LoraFlatFileFormatModel:
+def lora_validate_helper(json_file) -> LoraFlatFileFormat:
     return cast(
-        LoraFlatFileFormatModel,
-        model_validate_helper(LoraFlatFileFormatModel, json_file),
+        LoraFlatFileFormat,
+        model_validate_helper(LoraFlatFileFormat, json_file),
     )
 
 
@@ -51,7 +51,7 @@ def validate(json_file) -> None:
 )
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
-    click.echo(LoraFlatFileFormatModel.schema_json(indent=indent))
+    click.echo(LoraFlatFileFormat.schema_json(indent=indent))
 
 
 @lora.command()
@@ -67,14 +67,13 @@ def schema(indent: int) -> None:
 async def upload(json_file, mox_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = lora_validate_helper(json_file)
-    order = ["organisationer", "facetter", "klasser"]
-    ordered_objs = map(partial(getattr, flatfilemodel), order)
-    ordered_objs = filter(None, ordered_objs)
 
     client = ModelClient(base_url=mox_url)
     async with client.context():
-        for objs in ordered_objs:
-            print(await client.load_lora_objs(objs))
+        for chunk in flatfilemodel:
+            objs = list(concat_chunk(chunk))
+            if objs:
+                await client.load_lora_objs(objs)
 
 
 @lora.command()
