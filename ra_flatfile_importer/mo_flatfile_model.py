@@ -20,8 +20,8 @@ from ramodels.mo import EngagementAssociation
 from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
 
-from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer import __supported_mo_fileformat_versions__
+from ra_flatfile_importer.semantic_version_type import SemanticVersion
 
 # TODO: Change to from ramodels.mo import MOBase
 MOBase = Type[RABase]
