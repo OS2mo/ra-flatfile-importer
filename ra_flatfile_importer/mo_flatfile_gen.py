@@ -5,16 +5,15 @@
 # --------------------------------------------------------------------------------------
 from itertools import chain
 
-from mo_flatfile_model import MOFlatFileFormat
-from mo_flatfile_model import MOFlatFileFormatChunk
 from ramodels.mo import Address
 from ramodels.mo import Employee
 from ramodels.mo import Engagement
 from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
-from util import generate_uuid as unseeded_generate_uuid
 
-from ra_flatfile_importer import __mo_fileformat_version__
+from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormat
+from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatChunk
+from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 
 
 def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
@@ -162,6 +161,5 @@ def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
                 ),
             ),
         ],
-        version=__mo_fileformat_version__,
     )
     return flatfile

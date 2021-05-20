@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 import click
-from lora import lora
-from mo import mo
+
+from ra_flatfile_importer.lora import lora
+from ra_flatfile_importer.mo import mo
 
 
 @click.group()

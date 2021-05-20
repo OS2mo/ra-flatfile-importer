@@ -17,8 +17,16 @@ from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 
-from ra_flatfile_importer import __supported_lora_fileformat_versions__
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
+
+__lora_fileformat_version__: SemanticVersion = SemanticVersion("0.1.0")
+__supported_lora_fileformat_versions__: List[SemanticVersion] = list(
+    map(SemanticVersion, ["0.1.0"])
+)
+assert (
+    __lora_fileformat_version__ in __supported_lora_fileformat_versions__
+), "Generated Lora version not supported"
+
 
 # TODO: Change to from ramodels.mo import MOBase
 LoraBase = Type[RABase]
@@ -42,7 +50,7 @@ class LoraFlatFileFormatChunk(BaseModel):
     organisation: Optional[Organisation]
 
 
-class LoraFlatFileFormat(BaseModel):
+class LoraFlatFileFormatImport(BaseModel):
     """Flatfile format for LoRa.
 
     Each chunk in the list is send as bulk / in parallel, and as such entries
@@ -69,6 +77,18 @@ class LoraFlatFileFormat(BaseModel):
 
     def __getitem__(self, item):
         return self.chunks[item]
+
+
+class LoraFlatFileFormat(LoraFlatFileFormatImport):
+    """Flatfile format for LoRa.
+
+    Each chunk in the list is send as bulk / in parallel, and as such entries
+    within a single chunk should not depend on other entries within the same chunk.
+
+    Minimal valid example is [].
+    """
+
+    version: SemanticVersion = __lora_fileformat_version__
 
 
 def concat_chunk(chunk: LoraFlatFileFormatChunk) -> Iterator[LoraBase]:
