@@ -8,7 +8,7 @@ SPDX-License-Identifier: MPL-2.0
 
 OS2mo/LoRa flatfile importer.
 
-## Usage
+## Build
 ```
 docker build . -t ra-flatfile-importer
 ```
@@ -37,7 +37,23 @@ Usage: flatfile_importer.py [OPTIONS] COMMAND [ARGS]...
     lora  Lora Flatfile importer.
     mo    OS2mo Flatfile importer.
 ```
-Arguments can be provided for `docker run`:
+
+## Usage
+The primary usage of the tool is to upload flat-files to LoRa / OS2mo.
+```
+docker run --rm ra-flatfile-importer lora upload < lora.json
+docker run --rm ra-flatfile-importer mo upload < mo.json
+```
+
+The tool can generate dummy files to test out this functionality:
+```
+docker run --rm ra-flatfile-importer lora generate --name "Aarhus Kommune" > lora.json
+docker run --rm ra-flatfile-importer mo generate --name "Aarhus Kommune" > mo.json
+```
+These test files should be uploadable to Lora/MO and produce a valid MO instance.
+
+
+The tool has various other commands too, such as producing the validation schema for the flat file format:
 ```
 docker run --rm ra-flatfile-importer lora schema --indent 4
 ```
@@ -55,13 +71,9 @@ Which yields:
     }
 }
 ```
-
-The tool can also be used to generate dummy files and upload them:
+Or for validating whether a file is invalid:
 ```
-docker run --rm ra-flatfile-importer lora generate --name "Aarhus Kommune" > lora.json
-docker run --rm ra-flatfile-importer lora upload < lora.json
-docker run --rm ra-flatfile-importer mo generate --name "Aarhus Kommune" > mo.json
-docker run --rm ra-flatfile-importer mo upload < mo.json
+docker run --rm ra-flatfile-importer lora validate < lora.json
 ```
 
 ## Versioning
