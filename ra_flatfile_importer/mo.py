@@ -20,7 +20,9 @@ from util import validate_url
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatImport:
-    return cast(MOFlatFileFormatImport, model_validate_helper(MOFlatFileFormatImport, json_file))
+    return cast(
+        MOFlatFileFormatImport, model_validate_helper(MOFlatFileFormatImport, json_file)
+    )
 
 
 @click.group()
