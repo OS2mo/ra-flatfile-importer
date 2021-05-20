@@ -56,6 +56,14 @@ Which yields:
 }
 ```
 
+The tool can also be used to generate dummy files and upload them:
+```
+docker run --rm ra-flatfile-importer lora generate --name "Aarhus Kommune" > lora.json
+docker run --rm ra-flatfile-importer lora upload < lora.json
+docker run --rm ra-flatfile-importer mo generate --name "Aarhus Kommune" > mo.json
+docker run --rm ra-flatfile-importer mo upload < mo.json
+```
+
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/) with the following strategy:
 - MAJOR: Incompatible changes to existing data models

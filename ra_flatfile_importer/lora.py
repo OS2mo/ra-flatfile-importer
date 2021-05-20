@@ -9,7 +9,7 @@ from typing import Type
 import click
 from lora_flatfile_gen import generate_lora_flatfile
 from lora_flatfile_model import concat_chunk
-from lora_flatfile_model import LoraFlatFileFormat
+from lora_flatfile_model import LoraFlatFileFormatImport
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
@@ -22,10 +22,10 @@ from util import validate_url
 LoraObj = Type[RABase]
 
 
-def lora_validate_helper(json_file) -> LoraFlatFileFormat:
+def lora_validate_helper(json_file) -> LoraFlatFileFormatImport:
     return cast(
-        LoraFlatFileFormat,
-        model_validate_helper(LoraFlatFileFormat, json_file),
+        LoraFlatFileFormatImport,
+        model_validate_helper(LoraFlatFileFormatImport, json_file),
     )
 
 
@@ -51,7 +51,7 @@ def validate(json_file) -> None:
 )
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
-    click.echo(LoraFlatFileFormat.schema_json(indent=indent))
+    click.echo(LoraFlatFileFormatImport.schema_json(indent=indent))
 
 
 @lora.command()

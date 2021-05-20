@@ -10,7 +10,7 @@ from uuid import UUID
 import click
 from mo_flatfile_gen import generate_mo_flatfile
 from mo_flatfile_model import concat_chunk
-from mo_flatfile_model import MOFlatFileFormat
+from mo_flatfile_model import MOFlatFileFormatImport
 from pydantic import AnyHttpUrl
 from raclients.mo import ModelClient
 from util import async_to_sync
@@ -19,8 +19,8 @@ from util import takes_json_file
 from util import validate_url
 
 
-def mo_validate_helper(json_file) -> MOFlatFileFormat:
-    return cast(MOFlatFileFormat, model_validate_helper(MOFlatFileFormat, json_file))
+def mo_validate_helper(json_file) -> MOFlatFileFormatImport:
+    return cast(MOFlatFileFormatImport, model_validate_helper(MOFlatFileFormatImport, json_file))
 
 
 @click.group()
@@ -45,7 +45,7 @@ def validate(json_file) -> None:
 )
 def schema(indent: int) -> None:
     """Generate JSON schema for validate files."""
-    click.echo(MOFlatFileFormat.schema_json(indent=indent))
+    click.echo(MOFlatFileFormatImport.schema_json(indent=indent))
 
 
 @mo.command()
