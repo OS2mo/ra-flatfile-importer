@@ -9,6 +9,7 @@ import json
 import sys
 from functools import lru_cache
 from functools import wraps
+from typing import Any
 from typing import Awaitable
 from typing import Callable
 from typing import TypeVar
@@ -26,7 +27,7 @@ def load_file_as(model: BaseModel, json_file) -> BaseModel:
     return model.parse_obj(json_data)
 
 
-def validate_url(ctx: click.Context, param: str, value: str) -> AnyHttpUrl:
+def validate_url(ctx: click.Context, param: Any, value: Any) -> AnyHttpUrl:
     try:
         return parse_obj_as(AnyHttpUrl, value)
     except ValidationError as e:

@@ -7,16 +7,17 @@ from typing import cast
 from typing import Type
 
 import click
-from lora_flatfile_gen import generate_lora_flatfile
-from lora_flatfile_model import concat_chunk
-from lora_flatfile_model import LoraFlatFileFormatImport
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
-from util import async_to_sync
-from util import model_validate_helper
-from util import takes_json_file
-from util import validate_url
+
+from .lora_flatfile_gen import generate_lora_flatfile
+from .lora_flatfile_model import concat_chunk
+from .lora_flatfile_model import LoraFlatFileFormatImport
+from .util import async_to_sync
+from .util import model_validate_helper
+from .util import takes_json_file
+from .util import validate_url
 
 
 LoraObj = Type[RABase]
@@ -50,7 +51,7 @@ def validate(json_file) -> None:
     "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
 )
 def schema(indent: int) -> None:
-    """Generate JSON schema for validate files."""
+    """Generate JSON schema for valid files."""
     click.echo(LoraFlatFileFormatImport.schema_json(indent=indent))
 
 
