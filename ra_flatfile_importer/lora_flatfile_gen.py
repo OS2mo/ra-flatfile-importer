@@ -8,7 +8,7 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from lora_flatfile_model import LoraFlatFileFormatImport
+from lora_flatfile_model import LoraFlatFileFormat
 from lora_flatfile_model import LoraFlatFileFormatChunk
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
@@ -128,7 +128,7 @@ CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
 
 def generate_lora_flatfile(
     name: str, dummy_classes: bool = False
-) -> LoraFlatFileFormatImport:
+) -> LoraFlatFileFormat:
     seed = name
 
     def generate_uuid(identifier):
@@ -165,7 +165,7 @@ def generate_lora_flatfile(
             )
             klasses.append(klasse)
 
-    flatfile = LoraFlatFileFormatImport(
+    flatfile = LoraFlatFileFormat(
         chunks=[
             LoraFlatFileFormatChunk(organisation=organisation),
             LoraFlatFileFormatChunk(
