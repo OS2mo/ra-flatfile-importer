@@ -8,12 +8,13 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from lora_flatfile_model import LoraFlatFileFormat
-from lora_flatfile_model import LoraFlatFileFormatChunk
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
-from util import generate_uuid as unseeded_generate_uuid
+
+from ra_flatfile_importer.lora_flatfile_model import LoraFlatFileFormat
+from ra_flatfile_importer.lora_flatfile_model import LoraFlatFileFormatChunk
+from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 
 
 CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {

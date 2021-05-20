@@ -8,15 +8,16 @@ from typing import Optional
 from uuid import UUID
 
 import click
-from mo_flatfile_gen import generate_mo_flatfile
-from mo_flatfile_model import concat_chunk
-from mo_flatfile_model import MOFlatFileFormatImport
 from pydantic import AnyHttpUrl
 from raclients.mo import ModelClient
-from util import async_to_sync
-from util import model_validate_helper
-from util import takes_json_file
-from util import validate_url
+
+from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
+from ra_flatfile_importer.mo_flatfile_model import concat_chunk
+from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatImport
+from ra_flatfile_importer.util import async_to_sync
+from ra_flatfile_importer.util import model_validate_helper
+from ra_flatfile_importer.util import takes_json_file
+from ra_flatfile_importer.util import validate_url
 
 
 def mo_validate_helper(json_file) -> MOFlatFileFormatImport:
@@ -46,7 +47,7 @@ def validate(json_file) -> None:
     "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
 )
 def schema(indent: int) -> None:
-    """Generate JSON schema for validate files."""
+    """Generate JSON schema for valid files."""
     click.echo(MOFlatFileFormatImport.schema_json(indent=indent))
 
 
@@ -87,5 +88,6 @@ async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> N
     "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
 )
 def generate(name: str, indent: int) -> None:
+    """Generate OS2mo fixture."""
     flatfile = generate_mo_flatfile(name)
     click.echo(flatfile.json(indent=indent))
