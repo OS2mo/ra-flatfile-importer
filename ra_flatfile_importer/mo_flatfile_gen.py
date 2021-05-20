@@ -5,7 +5,7 @@
 # --------------------------------------------------------------------------------------
 from itertools import chain
 
-from mo_flatfile_model import MOFlatFileFormat
+from mo_flatfile_model import MOFlatFileFormatImport
 from mo_flatfile_model import MOFlatFileFormatChunk
 from ramodels.mo import Address
 from ramodels.mo import Employee
@@ -14,10 +14,8 @@ from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
 from util import generate_uuid as unseeded_generate_uuid
 
-from ra_flatfile_importer import __mo_fileformat_version__
 
-
-def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
+def generate_mo_flatfile(name: str) -> MOFlatFileFormatImport:
     seed = name
 
     def generate_uuid(identifier):
@@ -162,6 +160,5 @@ def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
                 ),
             ),
         ],
-        version=__mo_fileformat_version__,
     )
     return flatfile
