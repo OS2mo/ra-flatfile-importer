@@ -10,6 +10,7 @@ from uuid import UUID
 import click
 from pydantic import AnyHttpUrl
 from raclients.mo import ModelClient
+from tqdm import tqdm
 
 from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
 from ra_flatfile_importer.mo_flatfile_model import concat_chunk
@@ -72,10 +73,10 @@ async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> N
 
     client = ModelClient(base_url=mo_url, saml_token=saml_token)
     async with client.context():
-        for chunk in flatfilemodel:
+        for chunk in tqdm(flatfilemodel, desc="Filechunks", unit="chunk"):
             objs = list(concat_chunk(chunk))
             if objs:
-                print(await client.load_mo_objs(objs))
+                await client.load_mo_objs(objs)
 
 
 @mo.command()
