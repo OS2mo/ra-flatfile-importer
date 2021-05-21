@@ -72,6 +72,9 @@ class LoraFlatFileFormatImport(BaseModel):
             raise ValueError("fileformat version not supported")
         return v
 
+    def __len__(self):
+        return len(self.chunks)
+
     def __iter__(self):
         return iter(self.chunks)
 

@@ -11,7 +11,7 @@ from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
 
 
 def test_version():
-    assert __version__ == "0.1.0"
+    assert __version__ == "0.1.1"
 
 
 def test_lora_generate():

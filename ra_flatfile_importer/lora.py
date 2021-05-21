@@ -10,6 +10,7 @@ import click
 from pydantic import AnyHttpUrl
 from raclients.lora import ModelClient
 from ramodels.base import RABase
+from tqdm import tqdm
 
 from .lora_flatfile_gen import generate_lora_flatfile
 from .lora_flatfile_model import concat_chunk
@@ -71,7 +72,7 @@ async def upload(json_file, mox_url: AnyHttpUrl) -> None:
 
     client = ModelClient(base_url=mox_url)
     async with client.context():
-        for chunk in flatfilemodel:
+        for chunk in tqdm(flatfilemodel, desc="Filechunks", unit="chunk"):
             objs = list(concat_chunk(chunk))
             if objs:
                 await client.load_lora_objs(objs)
