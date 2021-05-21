@@ -78,10 +78,10 @@ class MOFlatFileFormatImport(BaseModel):
         return v
 
     def __iter__(self):
-        return iter(self.__root__)
+        return iter(self.chunks)
 
     def __getitem__(self, item):
-        return self.__root__[item]
+        return self.chunks[item]
 
 
 class MOFlatFileFormat(MOFlatFileFormatImport):
