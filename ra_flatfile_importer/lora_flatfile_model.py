@@ -7,13 +7,12 @@ from itertools import chain
 from typing import Iterator
 from typing import List
 from typing import Optional
-from typing import Type
 
 from pydantic import validator
-from ramodels.base import RABase
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
+from ramodels.lora._shared import LoraBase
 
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer.util import FrozenBaseModel
@@ -26,10 +25,6 @@ __supported_lora_fileformat_versions__: List[SemanticVersion] = list(
 assert (
     __lora_fileformat_version__ in __supported_lora_fileformat_versions__
 ), "Generated Lora version not supported"
-
-
-# TODO: Change to from ramodels.mo import MOBase
-LoraBase = Type[RABase]
 
 
 class LoraFlatFileFormatChunk(FrozenBaseModel):

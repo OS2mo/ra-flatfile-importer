@@ -7,16 +7,15 @@ from itertools import chain
 from typing import Iterator
 from typing import List
 from typing import Optional
-from typing import Type
 
 from pydantic import validator
-from ramodels.base import RABase
 from ramodels.mo import Address
 from ramodels.mo import Employee
 from ramodels.mo import Engagement
 from ramodels.mo import EngagementAssociation
 from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
+from ramodels.mo._shared import MOBase
 
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer.util import FrozenBaseModel
@@ -29,9 +28,6 @@ __supported_mo_fileformat_versions__: List[SemanticVersion] = list(
 assert (
     __mo_fileformat_version__ in __supported_mo_fileformat_versions__
 ), "Generated MO version not supported"
-
-# TODO: Change to from ramodels.mo import MOBase
-MOBase = Type[RABase]
 
 
 class MOFlatFileFormatChunk(FrozenBaseModel):
