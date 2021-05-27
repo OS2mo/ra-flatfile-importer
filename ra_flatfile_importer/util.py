@@ -37,7 +37,7 @@ def validate_url(ctx: click.Context, param: Any, value: Any) -> AnyHttpUrl:
         raise click.BadParameter(str(e))
 
 
-def takes_json_file(function):
+def takes_json_file(function: Callable):
     function = click.option(
         "--json-file",
         help="JSON file of models to parse",
