@@ -172,7 +172,7 @@ def generate_lora_flatfile(
             LoraFlatFileFormatChunk(
                 facetter=facets,
             ),
-            LoraFlatFileFormatChunk(klasser=klasses),
+            LoraFlatFileFormatChunk(klasser=klasses if dummy_classes else []),
         ],
     )
     return flatfile
