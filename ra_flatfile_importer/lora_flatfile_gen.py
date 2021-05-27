@@ -3,7 +3,9 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+from typing import Callable
 from typing import Dict
+from typing import Iterator
 from typing import List
 from typing import Tuple
 from typing import Union
@@ -17,7 +19,11 @@ from ra_flatfile_importer.lora_flatfile_model import LoraFlatFileFormatChunk
 from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 
 
-CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
+def apply(func: Callable):
+    return lambda tup: func(*tup)
+
+
+IN_CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
     "engagement_job_function": [
         "Udvikler",
         "Specialkonsulent",
@@ -126,6 +132,16 @@ CLASSES: Dict[str, List[Union[Tuple[str, str, str], str]]] = {
     "org_unit_hierarchy": [],
 }
 
+CLASSES: Dict[str, List[Tuple[str, str, str]]] = {}
+
+for facetbvn, classes in IN_CLASSES.items():
+    CLASSES[facetbvn] = list(
+        map(
+            lambda clazz: clazz if isinstance(clazz, tuple) else (clazz, clazz, "TEXT"),
+            classes,
+        )
+    )
+
 
 def generate_lora_flatfile(
     name: str, dummy_classes: bool = False
@@ -140,31 +156,34 @@ def generate_lora_flatfile(
         name=name,
         user_key=name,
     )
-    facets = []
-    klasses = []
-    for facetbvn, classes in CLASSES.items():
+
+    def construct_facets(facetbvn: str) -> Facet:
         facet = Facet.from_simplified_fields(
             uuid=generate_uuid(facetbvn),
             user_key=facetbvn,
             organisation_uuid=organisation.uuid,
         )
-        facets.append(facet)
-        for clazz in classes:
-            scope = "TEXT"
-            if isinstance(clazz, tuple):
-                user_key, title, scope = clazz
-            else:
-                title = clazz
-                user_key = title
-            klasse = Klasse.from_simplified_fields(
-                facet_uuid=facet.uuid,
-                uuid=generate_uuid(user_key),
-                user_key=user_key,
-                title=title,
-                scope=scope,
-                organisation_uuid=organisation.uuid,
-            )
-            klasses.append(klasse)
+        return facet
+
+    @apply
+    def construct_class(facetbvn: str, user_key: str, title: str, scope: str) -> Klasse:
+        klasse = Klasse.from_simplified_fields(
+            facet_uuid=generate_uuid(facetbvn),
+            uuid=generate_uuid(user_key),
+            user_key=user_key,
+            title=title,
+            scope=scope,
+            organisation_uuid=organisation.uuid,
+        )
+        return klasse
+
+    def yield_class() -> Iterator[Tuple[str, str, str, str]]:
+        for facetbvn, classes in CLASSES.items():
+            for user_key, title, scope in classes:
+                yield facetbvn, user_key, title, scope
+
+    facets = list(map(construct_facets, CLASSES.keys()))
+    klasses = list(map(construct_class, yield_class()))
 
     flatfile = LoraFlatFileFormat(
         chunks=[
