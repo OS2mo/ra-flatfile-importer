@@ -9,8 +9,6 @@ from typing import List
 from typing import Optional
 from typing import Type
 
-from pydantic import BaseModel
-from pydantic import Extra
 from pydantic import validator
 from ramodels.base import RABase
 from ramodels.mo import Address
@@ -21,6 +19,8 @@ from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
 
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
+from ra_flatfile_importer.util import FrozenBaseModel
+
 
 __mo_fileformat_version__: SemanticVersion = SemanticVersion("0.1.0")
 __supported_mo_fileformat_versions__: List[SemanticVersion] = list(
@@ -34,7 +34,7 @@ assert (
 MOBase = Type[RABase]
 
 
-class MOFlatFileFormatChunk(BaseModel):
+class MOFlatFileFormatChunk(FrozenBaseModel):
     """Flatfile chunk for OS2mo.
 
     Each chunk in the list is send as bulk / in parallel, and as such entries
@@ -42,10 +42,6 @@ class MOFlatFileFormatChunk(BaseModel):
 
     Minimal valid example is {}.
     """
-
-    class Config:
-        frozen = True
-        extra = Extra.forbid
 
     org_units: Optional[List[OrganisationUnit]]
     employees: Optional[List[Employee]]
@@ -55,7 +51,7 @@ class MOFlatFileFormatChunk(BaseModel):
     engagement_associations: Optional[List[EngagementAssociation]]
 
 
-class MOFlatFileFormatImport(BaseModel):
+class MOFlatFileFormatImport(FrozenBaseModel):
     """Flatfile format for OS2mo.
 
     Each chunk in the list is send as bulk / in parallel, and as such entries
@@ -63,10 +59,6 @@ class MOFlatFileFormatImport(BaseModel):
 
     Minimal valid example is [].
     """
-
-    class Config:
-        frozen = True
-        extra = Extra.forbid
 
     chunks: List[MOFlatFileFormatChunk]
     version: SemanticVersion

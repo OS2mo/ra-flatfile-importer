@@ -3,15 +3,10 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
-from ra_flatfile_importer import __version__
 from ra_flatfile_importer import LoraFlatFileFormat
 from ra_flatfile_importer import MOFlatFileFormat
 from ra_flatfile_importer.lora_flatfile_gen import generate_lora_flatfile
 from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
-
-
-def test_version():
-    assert __version__ == "0.1.1"
 
 
 def test_lora_generate():

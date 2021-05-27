@@ -21,8 +21,15 @@ from uuid import UUID
 import click
 from pydantic import AnyHttpUrl
 from pydantic import BaseModel
+from pydantic import Extra
 from pydantic import ValidationError
 from pydantic.tools import parse_obj_as
+
+
+class FrozenBaseModel(BaseModel):
+    class Config:
+        frozen = True
+        extra = Extra.forbid
 
 
 def load_file_as(model: Type, json_file: TextIO) -> BaseModel:

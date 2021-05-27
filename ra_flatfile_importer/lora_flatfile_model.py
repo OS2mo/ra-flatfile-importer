@@ -9,8 +9,6 @@ from typing import List
 from typing import Optional
 from typing import Type
 
-from pydantic import BaseModel
-from pydantic import Extra
 from pydantic import validator
 from ramodels.base import RABase
 from ramodels.lora import Facet
@@ -18,6 +16,8 @@ from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
+from ra_flatfile_importer.util import FrozenBaseModel
+
 
 __lora_fileformat_version__: SemanticVersion = SemanticVersion("0.1.0")
 __supported_lora_fileformat_versions__: List[SemanticVersion] = list(
@@ -32,7 +32,7 @@ assert (
 LoraBase = Type[RABase]
 
 
-class LoraFlatFileFormatChunk(BaseModel):
+class LoraFlatFileFormatChunk(FrozenBaseModel):
     """Flatfile chunk for LoRa.
 
     Each chunk in the list is send as bulk / in parallel, and as such entries
@@ -41,16 +41,12 @@ class LoraFlatFileFormatChunk(BaseModel):
     Minimal valid example is {}.
     """
 
-    class Config:
-        frozen = True
-        extra = Extra.forbid
-
     facetter: Optional[List[Facet]]
     klasser: Optional[List[Klasse]]
     organisation: Optional[Organisation]
 
 
-class LoraFlatFileFormatImport(BaseModel):
+class LoraFlatFileFormatImport(FrozenBaseModel):
     """Flatfile format for LoRa.
 
     Each chunk in the list is send as bulk / in parallel, and as such entries
@@ -58,10 +54,6 @@ class LoraFlatFileFormatImport(BaseModel):
 
     Minimal valid example is [].
     """
-
-    class Config:
-        frozen = True
-        extra = Extra.forbid
 
     chunks: List[LoraFlatFileFormatChunk]
     version: SemanticVersion
