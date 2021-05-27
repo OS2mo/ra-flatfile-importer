@@ -12,6 +12,9 @@ from functools import wraps
 from typing import Any
 from typing import Awaitable
 from typing import Callable
+from typing import cast
+from typing import TextIO
+from typing import Type
 from typing import TypeVar
 from uuid import UUID
 
@@ -22,16 +25,16 @@ from pydantic import ValidationError
 from pydantic.tools import parse_obj_as
 
 
-def load_file_as(model: BaseModel, json_file) -> BaseModel:
+def load_file_as(model: Type, json_file: TextIO) -> BaseModel:
     json_data = json.load(json_file)
-    return model.parse_obj(json_data)
+    return cast(BaseModel, model.parse_obj(json_data))
 
 
 def validate_url(ctx: click.Context, param: Any, value: Any) -> AnyHttpUrl:
     try:
-        return parse_obj_as(AnyHttpUrl, value)
+        return cast(AnyHttpUrl, parse_obj_as(AnyHttpUrl, value))
     except ValidationError as e:
-        raise click.BadParameter(e)
+        raise click.BadParameter(str(e))
 
 
 def takes_json_file(function):
@@ -44,13 +47,13 @@ def takes_json_file(function):
     return function
 
 
-def model_validate_helper(model: BaseModel, json_file) -> BaseModel:
+def model_validate_helper(model: Type, json_file: TextIO) -> BaseModel:
     try:
         return load_file_as(model, json_file)
     except json.decoder.JSONDecodeError:
         raise click.ClickException("Unable to parse input file as JSON")
     except ValidationError as e:
-        raise click.ClickException(e)
+        raise click.ClickException(str(e))
 
 
 @lru_cache(maxsize=None)

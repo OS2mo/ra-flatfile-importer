@@ -5,6 +5,7 @@
 # --------------------------------------------------------------------------------------
 from typing import cast
 from typing import Optional
+from typing import TextIO
 from uuid import UUID
 
 import click
@@ -21,7 +22,7 @@ from ra_flatfile_importer.util import takes_json_file
 from ra_flatfile_importer.util import validate_url
 
 
-def mo_validate_helper(json_file) -> MOFlatFileFormatImport:
+def mo_validate_helper(json_file: TextIO) -> MOFlatFileFormatImport:
     return cast(
         MOFlatFileFormatImport, model_validate_helper(MOFlatFileFormatImport, json_file)
     )
@@ -38,7 +39,7 @@ def mo() -> None:
 
 @mo.command()
 @takes_json_file
-def validate(json_file) -> None:
+def validate(json_file: TextIO) -> None:
     """Validate the provided JSON file."""
     mo_validate_helper(json_file)
 
@@ -67,7 +68,9 @@ def schema(indent: int) -> None:
 )
 @takes_json_file
 @async_to_sync
-async def upload(json_file, mo_url: AnyHttpUrl, saml_token: Optional[UUID]) -> None:
+async def upload(
+    json_file: TextIO, mo_url: AnyHttpUrl, saml_token: Optional[UUID]
+) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
 

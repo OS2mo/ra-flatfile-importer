@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from typing import cast
+from typing import TextIO
 from typing import Type
 
 import click
@@ -24,7 +25,7 @@ from .util import validate_url
 LoraObj = Type[RABase]
 
 
-def lora_validate_helper(json_file) -> LoraFlatFileFormatImport:
+def lora_validate_helper(json_file: TextIO) -> LoraFlatFileFormatImport:
     return cast(
         LoraFlatFileFormatImport,
         model_validate_helper(LoraFlatFileFormatImport, json_file),
@@ -42,7 +43,7 @@ def lora() -> None:
 
 @lora.command()
 @takes_json_file
-def validate(json_file) -> None:
+def validate(json_file: TextIO) -> None:
     """Validate the provided JSON file."""
     lora_validate_helper(json_file)
 
@@ -66,7 +67,7 @@ def schema(indent: int) -> None:
 )
 @takes_json_file
 @async_to_sync
-async def upload(json_file, mox_url: AnyHttpUrl) -> None:
+async def upload(json_file: TextIO, mox_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = lora_validate_helper(json_file)
 
