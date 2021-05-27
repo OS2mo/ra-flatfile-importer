@@ -78,9 +78,11 @@ docker run --rm ra-flatfile-importer lora validate < lora.json
 
 ## Versioning
 This project uses [Semantic Versioning](https://semver.org/) with the following strategy:
-- MAJOR: Incompatible changes to existing data models
-- MINOR: Backwards compatible updates to existing data models OR new models added
+- MAJOR: Incompatible changes to existing commandline interface
+- MINOR: Backwards compatible updates to commandline interface
 - PATCH: Backwards compatible bug fixes
+
+The fileformat is versioned directly, and the version is exported in the file itself.
 
 <!--
 ## Getting Started
