@@ -5,6 +5,7 @@
 # --------------------------------------------------------------------------------------
 import json
 from contextlib import suppress as do_not_raise
+from typing import Any
 
 import pytest
 from click.testing import CliRunner
@@ -81,7 +82,7 @@ def test_json_output(args, expect_json):
     result = runner.invoke(cli, args)
     assert result.exit_code == 0
 
-    context_manager = do_not_raise()
+    context_manager: Any = do_not_raise()
     if not expect_json:
         context_manager = pytest.raises(json.decoder.JSONDecodeError)
 

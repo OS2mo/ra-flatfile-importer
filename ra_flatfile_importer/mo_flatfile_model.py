@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from itertools import chain
+from typing import Any
 from typing import Iterator
 from typing import List
 from typing import Optional
@@ -60,18 +61,18 @@ class MOFlatFileFormatImport(FrozenBaseModel):
     version: SemanticVersion
 
     @validator("version", pre=True, always=True)
-    def check_version(cls, v):
+    def check_version(cls, v: Any) -> Any:
         if v not in __supported_mo_fileformat_versions__:
             raise ValueError("fileformat version not supported")
         return v
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.chunks)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[MOFlatFileFormatChunk]:  # type: ignore
         return iter(self.chunks)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: int) -> MOFlatFileFormatChunk:
         return self.chunks[item]
 
 

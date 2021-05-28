@@ -13,6 +13,7 @@ from typing import Any
 from typing import Awaitable
 from typing import Callable
 from typing import cast
+from typing import Optional
 from typing import TextIO
 from typing import Type
 from typing import TypeVar
@@ -44,7 +45,7 @@ def validate_url(ctx: click.Context, param: Any, value: Any) -> AnyHttpUrl:
         raise click.BadParameter(str(e))
 
 
-def takes_json_file(function: Callable):
+def takes_json_file(function: Callable) -> Callable:
     function = click.option(
         "--json-file",
         help="JSON file of models to parse",
@@ -101,7 +102,7 @@ def async_to_sync(
     """
 
     @wraps(func)
-    def wrapper(*args, **kwargs) -> CallableReturnType:
+    def wrapper(*args: Any, **kwargs: Optional[Any]) -> CallableReturnType:
         return asyncio.run(func(*args, **kwargs))
 
     return wrapper

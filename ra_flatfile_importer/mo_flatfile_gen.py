@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from itertools import chain
+from uuid import UUID
 
 from ramodels.mo import Address
 from ramodels.mo import Employee
@@ -19,7 +20,7 @@ from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
     seed = name
 
-    def generate_uuid(identifier):
+    def generate_uuid(identifier: str) -> UUID:
         return unseeded_generate_uuid(seed + identifier)
 
     flatfile = MOFlatFileFormat(
