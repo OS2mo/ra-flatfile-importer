@@ -9,6 +9,7 @@ from typing import Type
 
 import click
 from pydantic import AnyHttpUrl
+from ra_utils.async_to_sync import async_to_sync
 from raclients.lora import ModelClient
 from ramodels.base import RABase
 from tqdm import tqdm
@@ -16,7 +17,6 @@ from tqdm import tqdm
 from .lora_flatfile_gen import generate_lora_flatfile
 from .lora_flatfile_model import concat_chunk
 from .lora_flatfile_model import LoraFlatFileFormatImport
-from .util import async_to_sync
 from .util import model_validate_helper
 from .util import takes_json_file
 from .util import validate_url

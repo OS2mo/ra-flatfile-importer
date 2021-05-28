@@ -10,13 +10,13 @@ from uuid import UUID
 
 import click
 from pydantic import AnyHttpUrl
+from ra_utils.async_to_sync import async_to_sync
 from raclients.mo import ModelClient
 from tqdm import tqdm
 
 from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
 from ra_flatfile_importer.mo_flatfile_model import concat_chunk
 from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatImport
-from ra_flatfile_importer.util import async_to_sync
 from ra_flatfile_importer.util import model_validate_helper
 from ra_flatfile_importer.util import takes_json_file
 from ra_flatfile_importer.util import validate_url
