@@ -9,7 +9,7 @@ from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormat
 from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatChunk
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
 
-__version__: SemanticVersion = SemanticVersion("0.1.1")
+__version__: SemanticVersion = SemanticVersion("0.1.2")
 
 __all__ = [
     "__version__",
