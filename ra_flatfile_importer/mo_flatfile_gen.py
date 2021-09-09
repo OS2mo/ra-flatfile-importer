@@ -4,24 +4,22 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from itertools import chain
-from uuid import UUID
 
-from ramodels.mo import Address
+import ra_utils.generate_uuid
 from ramodels.mo import Employee
-from ramodels.mo import Engagement
-from ramodels.mo import Manager
 from ramodels.mo import OrganisationUnit
+from ramodels.mo.details import Address
+from ramodels.mo.details import Engagement
+from ramodels.mo.details import Manager
 
 from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormat
 from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatChunk
-from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 
 
 def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
     seed = name
 
-    def generate_uuid(identifier: str) -> UUID:
-        return unseeded_generate_uuid(seed + identifier)
+    generate_uuid = ra_utils.generate_uuid.uuid_generator(seed)
 
     flatfile = MOFlatFileFormat(
         chunks=[
@@ -33,15 +31,21 @@ def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
                         name=name,
                         org_unit_type_uuid=generate_uuid("Institution"),
                         org_unit_level_uuid=generate_uuid("N1"),
+                        from_date="1967-12-08",
                     )
                     for name in ["Kommune bestyrelse"]
                 ],
                 employees=[
                     Employee(
                         uuid=generate_uuid(name),
-                        name=name,
+                        givenname=givenname,
+                        surname=surname,
                     )
-                    for name in ["Kim Kontorelev", "Simon Specialist", "Jimmy Jurist"]
+                    for givenname, surname in [
+                        ("Kim", "Kontorelev"),
+                        ("Simon", "Specialist"),
+                        ("Jimmy", "Jurist"),
+                    ]
                 ],
             ),
             MOFlatFileFormatChunk(
@@ -53,6 +57,7 @@ def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
                         org_unit_type_uuid=generate_uuid("Institutionsafsnit"),
                         org_unit_level_uuid=generate_uuid("N2"),
                         parent_uuid=generate_uuid("Kommune bestyrelse"),
+                        from_date="2012-04-03",
                     )
                     for name in ["Specialområde"]
                 ],
@@ -90,9 +95,9 @@ def generate_mo_flatfile(name: str) -> MOFlatFileFormat:
                         uuid=generate_uuid("Jimmy leader"),
                         org_unit_uuid=generate_uuid("Kommune bestyrelse"),
                         person_uuid=generate_uuid("Jimmy Jurist"),
-                        responsibility_uuid=generate_uuid(
-                            "Personale: ansættelse/afskedigelse"
-                        ),
+                        responsibility_uuids=[
+                            generate_uuid("Personale: ansættelse/afskedigelse")
+                        ],
                         manager_level_uuid=generate_uuid("Niveau 1"),
                         manager_type_uuid=generate_uuid("Direktør"),
                         from_date="2015-01-02",

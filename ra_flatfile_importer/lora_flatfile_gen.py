@@ -9,15 +9,14 @@ from typing import Iterator
 from typing import List
 from typing import Tuple
 from typing import Union
-from uuid import UUID
 
+import ra_utils.generate_uuid
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
 from ramodels.lora import Organisation
 
 from ra_flatfile_importer.lora_flatfile_model import LoraFlatFileFormat
 from ra_flatfile_importer.lora_flatfile_model import LoraFlatFileFormatChunk
-from ra_flatfile_importer.util import generate_uuid as unseeded_generate_uuid
 
 
 def apply(func: Callable) -> Callable:
@@ -149,8 +148,7 @@ def generate_lora_flatfile(
 ) -> LoraFlatFileFormat:
     seed = name
 
-    def generate_uuid(identifier: str) -> UUID:
-        return unseeded_generate_uuid(seed + identifier)
+    generate_uuid = ra_utils.generate_uuid.uuid_generator(seed)
 
     organisation = Organisation.from_simplified_fields(
         uuid=generate_uuid(""),

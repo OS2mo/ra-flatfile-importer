@@ -12,8 +12,8 @@ from typing import Optional
 from pydantic import validator
 from ramodels.lora import Facet
 from ramodels.lora import Klasse
+from ramodels.lora import LoraBase
 from ramodels.lora import Organisation
-from ramodels.lora._shared import LoraBase
 
 from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer.util import FrozenBaseModel

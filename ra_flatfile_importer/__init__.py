@@ -12,6 +12,7 @@ from ra_flatfile_importer.semantic_version_type import SemanticVersion
 __version__: SemanticVersion = SemanticVersion("0.1.1")
 
 __all__ = [
+    "__version__",
     "MOFlatFileFormat",
     "MOFlatFileFormatChunk",
     "LoraFlatFileFormat",

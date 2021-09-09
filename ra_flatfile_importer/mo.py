@@ -4,14 +4,14 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from typing import cast
-from typing import Optional
 from typing import TextIO
-from uuid import UUID
 
 import click
 from pydantic import AnyHttpUrl
 from ra_utils.async_to_sync import async_to_sync
+from ra_utils.headers import TokenSettings
 from raclients.mo import ModelClient
+from raclients.modelclientbase import common_session_factory
 from tqdm import tqdm
 
 from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
@@ -61,20 +61,16 @@ def schema(indent: int) -> None:
     callback=validate_url,
     help="Address of the OS2mo host",
 )
-@click.option(
-    "--saml-token",
-    type=click.UUID,
-    help="Address of the OS2mo host",
-)
 @takes_json_file
 @async_to_sync
-async def upload(
-    json_file: TextIO, mo_url: AnyHttpUrl, saml_token: Optional[UUID]
-) -> None:
+async def upload(json_file: TextIO, mo_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
     flatfilemodel = mo_validate_helper(json_file)
 
-    client = ModelClient(base_url=mo_url, saml_token=saml_token)
+    client = ModelClient(
+        base_url=mo_url,
+        session_factory=common_session_factory(token_settings=TokenSettings()),
+    )
     async with client.context():
         for chunk in tqdm(flatfilemodel, desc="Filechunks", unit="chunk"):
             objs = list(concat_chunk(chunk))
