@@ -5,8 +5,9 @@
 # --------------------------------------------------------------------------------------
 from ra_utils.semantic_version_type import SemanticVersion
 
-from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormat
-from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatChunk
+from ra_flatfile_importer.mo.models import MOFlatFileFormat
+from ra_flatfile_importer.mo.models import MOFlatFileFormatChunk
+
 
 __version__: SemanticVersion = SemanticVersion("0.1.2")
 

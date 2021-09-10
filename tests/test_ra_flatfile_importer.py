@@ -7,7 +7,7 @@ from importlib.metadata import version  # type: ignore
 
 from ra_flatfile_importer import __version__
 from ra_flatfile_importer import MOFlatFileFormat
-from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
+from ra_flatfile_importer.mo.generator import generate_mo_flatfile
 
 
 def test_version():

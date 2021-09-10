@@ -12,8 +12,8 @@ from ramodels.mo.details import Address
 from ramodels.mo.details import Engagement
 from ramodels.mo.details import Manager
 
-from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormat
-from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatChunk
+from ra_flatfile_importer import MOFlatFileFormat
+from ra_flatfile_importer import MOFlatFileFormatChunk
 
 
 def generate_mo_flatfile(name: str) -> MOFlatFileFormat:

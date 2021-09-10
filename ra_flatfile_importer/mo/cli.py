@@ -3,20 +3,16 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+import asyncio
 from typing import cast
 from typing import TextIO
 
 import click
 from pydantic import AnyHttpUrl
-from ra_utils.async_to_sync import async_to_sync
-from ra_utils.headers import TokenSettings
-from raclients.mo import ModelClient
-from raclients.modelclientbase import common_session_factory
-from tqdm import tqdm
 
-from ra_flatfile_importer.mo_flatfile_gen import generate_mo_flatfile
-from ra_flatfile_importer.mo_flatfile_model import concat_chunk
-from ra_flatfile_importer.mo_flatfile_model import MOFlatFileFormatImport
+from ra_flatfile_importer.mo.generator import generate_mo_flatfile
+from ra_flatfile_importer.mo.models import MOFlatFileFormatImport
+from ra_flatfile_importer.mo.uploader import upload as mo_upload
 from ra_flatfile_importer.util import model_validate_helper
 from ra_flatfile_importer.util import takes_json_file
 from ra_flatfile_importer.util import validate_url
@@ -62,20 +58,10 @@ def schema(indent: int) -> None:
     help="Address of the OS2mo host",
 )
 @takes_json_file
-@async_to_sync
-async def upload(json_file: TextIO, mo_url: AnyHttpUrl) -> None:
+def upload(json_file: TextIO, mo_url: AnyHttpUrl) -> None:
     """Validate the provided JSON file and upload its contents."""
-    flatfilemodel = mo_validate_helper(json_file)
-
-    client = ModelClient(
-        base_url=mo_url,
-        session_factory=common_session_factory(token_settings=TokenSettings()),
-    )
-    async with client.context():
-        for chunk in tqdm(flatfilemodel, desc="Filechunks", unit="chunk"):
-            objs = list(concat_chunk(chunk))
-            if objs:
-                await client.load_mo_objs(objs)
+    flat_file_import = mo_validate_helper(json_file)
+    asyncio.run(mo_upload(flat_file_import, mo_url))
 
 
 @mo.command()
