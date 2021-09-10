@@ -14,6 +14,4 @@ __all__ = [
     "__version__",
     "MOFlatFileFormat",
     "MOFlatFileFormatChunk",
-    "LoraFlatFileFormat",
-    "LoraFlatFileFormatChunk",
 ]

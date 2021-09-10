@@ -5,7 +5,6 @@
 # --------------------------------------------------------------------------------------
 import click
 
-from ra_flatfile_importer.lora import lora
 from ra_flatfile_importer.mo import mo
 
 
@@ -13,12 +12,11 @@ from ra_flatfile_importer.mo import mo
 def cli() -> None:
     """Flatfile importer.
 
-    Used to validate and load flatfile data (JSON) into OS2mo/LoRa.
+    Used to validate and load flatfile data (JSON) into OS2mo.
     """
     pass
 
 
-cli.add_command(lora)
 cli.add_command(mo)
 
 

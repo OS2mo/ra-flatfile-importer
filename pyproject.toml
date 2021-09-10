@@ -7,7 +7,7 @@ license = "MPL-2.0"
 readme = "README.md"
 homepage = "https://magenta.dk/"
 repository = "https://git.magenta.dk/rammearkitektur/ra-flatfile-importer"
-keywords = ["os2mo", "lora"]
+keywords = ["os2mo"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

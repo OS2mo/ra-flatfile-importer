@@ -19,7 +19,7 @@ from ra_flatfile_importer.flatfile_importer import cli
         (
             [],
             "Flatfile importer.",
-            ["lora  Lora Flatfile importer.", "mo    OS2mo Flatfile importer."],
+            ["mo  OS2mo Flatfile importer."],
         ),
         (
             ["mo"],
@@ -32,18 +32,7 @@ from ra_flatfile_importer.flatfile_importer import cli
             ],
         ),
         (
-            ["lora"],
-            "Lora Flatfile importer.",
-            [
-                "generate    Generate LoRa fixture.",
-                "initialize  Generate LoRa initializer file.",
-                "schema      Generate JSON schema for valid files.",
-                "upload      Validate the provided JSON file and upload its contents.",
-                "validate    Validate the provided JSON file.",
-            ],
-        ),
-        (
-            ["lora", "schema", "--help"],
+            ["mo", "schema", "--help"],
             "Generate JSON schema for valid files.",
             ["--indent INTEGER  Pass 'indent' to json serializer"],
         ),
@@ -64,13 +53,6 @@ def test_cli(args, title, expected):
     [
         ([], False),
         (["mo"], False),
-        (["lora"], False),
-        (["lora", "schema"], True),
-        (["lora", "schema", "--help"], False),
-        (["lora", "generate", "--name", "Aarhus Kommune"], True),
-        (["lora", "initialize", "--name", "Aarhus Kommune"], True),
-        (["lora", "validate", "--help"], False),
-        (["lora", "upload", "--help"], False),
         (["mo", "schema"], True),
         (["mo", "generate", "--name", "Aarhus Kommune"], True),
         (["mo", "validate", "--help"], False),
