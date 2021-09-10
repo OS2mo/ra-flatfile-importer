@@ -25,7 +25,7 @@ class FrozenBaseModel(BaseModel):
         extra = Extra.forbid
 
 
-def load_file_as(model: Type, json_file: TextIO) -> BaseModel:
+def load_file_as(model: Type[BaseModel], json_file: TextIO) -> BaseModel:
     json_data = json.load(json_file)
     return cast(BaseModel, model.parse_obj(json_data))
 
@@ -47,7 +47,7 @@ def takes_json_file(function: Callable) -> Callable:
     return function
 
 
-def model_validate_helper(model: Type, json_file: TextIO) -> BaseModel:
+def model_validate_helper(model: Type[BaseModel], json_file: TextIO) -> BaseModel:
     try:
         return load_file_as(model, json_file)
     except json.decoder.JSONDecodeError:

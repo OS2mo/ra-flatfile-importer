@@ -15,8 +15,8 @@ from ramodels.mo import Employee
 from ramodels.mo import MOBase
 from ramodels.mo import OrganisationUnit
 from ramodels.mo.details import Address
+from ramodels.mo.details import Association
 from ramodels.mo.details import Engagement
-from ramodels.mo.details import EngagementAssociation
 from ramodels.mo.details import Manager
 
 from ra_flatfile_importer.util import FrozenBaseModel
@@ -44,7 +44,7 @@ class MOFlatFileFormatChunk(FrozenBaseModel):
     engagements: Optional[List[Engagement]]
     address: Optional[List[Address]]
     manager: Optional[List[Manager]]
-    engagement_associations: Optional[List[EngagementAssociation]]
+    associations: Optional[List[Association]]
 
 
 class MOFlatFileFormatImport(FrozenBaseModel):
@@ -95,5 +95,5 @@ def concat_chunk(chunk: MOFlatFileFormatChunk) -> Iterator[MOBase]:
         chunk.engagements or [],
         chunk.address or [],
         chunk.manager or [],
-        chunk.engagement_associations or [],
+        chunk.associations or [],
     )
