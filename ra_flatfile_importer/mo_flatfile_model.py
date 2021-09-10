@@ -10,6 +10,7 @@ from typing import List
 from typing import Optional
 
 from pydantic import validator
+from ra_utils.semantic_version_type import SemanticVersion
 from ramodels.mo import Employee
 from ramodels.mo import MOBase
 from ramodels.mo import OrganisationUnit
@@ -18,7 +19,6 @@ from ramodels.mo.details import Engagement
 from ramodels.mo.details import EngagementAssociation
 from ramodels.mo.details import Manager
 
-from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer.util import FrozenBaseModel
 
 __mo_fileformat_version__: SemanticVersion = SemanticVersion("0.1.0")
