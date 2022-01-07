@@ -52,16 +52,65 @@ def schema(indent: int) -> None:
 @mo.command()
 @click.option(
     "--mo-url",
-    default="http://localhost:5000",
-    show_default=True,
+    help="OS2mo URL.",
+    required=True,
     callback=validate_url,
-    help="Address of the OS2mo host",
+    envvar="MO_URL",
+    show_envvar=True,
+)
+@click.option(
+    "--client-id",
+    help="Client ID used to authenticate against OS2mo.",
+    required=True,
+    default="dipex",
+    show_default=True,
+    envvar="CLIENT_ID",
+    show_envvar=True,
+)
+@click.option(
+    "--client-secret",
+    help="Client secret used to authenticate against OS2mo.",
+    required=True,
+    envvar="CLIENT_SECRET",
+    show_envvar=True,
+)
+@click.option(
+    "--auth-server",
+    help="Keycloak authentication server.",
+    required=True,
+    callback=validate_url,
+    envvar="AUTH_SERVER",
+    show_envvar=True,
+)
+@click.option(
+    "--auth-realm",
+    help="Keycloak realm for OS2mo authentication.",
+    default="mo",
+    show_default=True,
+    envvar="AUTH_REALM",
+    show_envvar=True,
 )
 @takes_json_file
-def upload(json_file: TextIO, mo_url: AnyHttpUrl) -> None:
+def upload(
+    json_file: TextIO,
+    mo_url: AnyHttpUrl,
+    client_id: str,
+    client_secret: str,
+    auth_server: AnyHttpUrl,
+    auth_realm: str,
+) -> None:
     """Validate the provided JSON file and upload its contents."""
     flat_file_import = mo_validate_helper(json_file)
-    asyncio.run(mo_upload(flat_file_import, mo_url))
+    asyncio.run(
+        mo_upload(
+            flat_file_import=flat_file_import,
+            mo_url=mo_url,
+            client_id=client_id,
+            client_secret=client_secret,
+            auth_server=auth_server,
+            auth_realm=auth_realm,
+        )
+    )
 
 
 @mo.command()
