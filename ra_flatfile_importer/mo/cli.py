@@ -111,18 +111,3 @@ def upload(
             auth_realm=auth_realm,
         )
     )
-
-
-@mo.command()
-@click.option(
-    "--name",
-    help="Name of the root organization",
-    required=True,
-)
-@click.option(
-    "--indent", help="Pass 'indent' to json serializer", type=click.INT, default=None
-)
-def generate(name: str, indent: int) -> None:
-    """Generate OS2mo fixture."""
-    flatfile = generate_mo_flatfile(name)
-    click.echo(flatfile.json(indent=indent))

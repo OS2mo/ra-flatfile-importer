@@ -19,7 +19,6 @@ from ra_flatfile_importer.cli import cli
         ([], False),
         (["mo"], False),
         (["mo", "schema"], True),
-        (["mo", "generate", "--name", "Aarhus Kommune"], True),
         (["mo", "validate", "--help"], False),
         (["mo", "upload", "--help"], False),
     ],
