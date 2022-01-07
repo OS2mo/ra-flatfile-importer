@@ -9,8 +9,8 @@ from raclients.mo import ModelClient
 from raclients.modelclientbase import common_session_factory
 from tqdm import tqdm
 
-from ra_flatfile_importer.mo.models import concat_chunk
-from ra_flatfile_importer.mo.models import MOFlatFileFormatImport
+from ra_flatfile_importer.models import concat_chunk
+from ra_flatfile_importer.models import MOFlatFileFormatImport
 
 
 async def upload(
@@ -28,7 +28,7 @@ async def upload(
                 client_id=client_id,
                 client_secret=client_secret,
                 auth_realm=auth_realm,
-                auth_server=auth_server
+                auth_server=auth_server,
             )
         ),
     )
