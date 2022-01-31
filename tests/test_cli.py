@@ -17,10 +17,9 @@ from ra_flatfile_importer.cli import cli
     "args,expect_json",
     [
         ([], False),
-        (["mo"], False),
-        (["mo", "schema"], True),
-        (["mo", "validate", "--help"], False),
-        (["mo", "upload", "--help"], False),
+        (["schema"], True),
+        (["validate", "--help"], False),
+        (["upload", "--help"], False),
     ],
 )
 def test_json_output(args, expect_json):
