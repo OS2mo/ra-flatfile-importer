@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
 from pydantic import AnyHttpUrl
+from raclients.modelclient.mo import ModelClient
 from tqdm import tqdm
 
-from ra_flatfile_importer.models import MOFlatFileFormatImport
 from ra_flatfile_importer.models import concat_chunk
-from raclients.modelclient.mo import ModelClient
+from ra_flatfile_importer.models import MOFlatFileFormatImport
 
 
 async def upload(
