@@ -23,9 +23,9 @@ from ramodels.mo.details import Role
 
 from ra_flatfile_importer.util import FrozenBaseModel
 
-__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.1.1")
+__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.2.0")
 __supported_mo_fileformat_versions__: list[SemanticVersion] = list(
-    map(SemanticVersion, ["0.1.1"])
+    map(SemanticVersion, ["0.1.1", "0.2.0"])
 )
 assert (
     __mo_fileformat_version__ in __supported_mo_fileformat_versions__
@@ -62,6 +62,7 @@ class MOFlatFileFormatImport(FrozenBaseModel):
     """
 
     chunks: list[MOFlatFileFormatChunk]
+    edits: list[MOFlatFileFormatChunk]
     version: SemanticVersion
 
     @validator("version", pre=True, always=True)
@@ -69,15 +70,6 @@ class MOFlatFileFormatImport(FrozenBaseModel):
         if v not in __supported_mo_fileformat_versions__:
             raise ValueError("fileformat version not supported")
         return v
-
-    def __len__(self) -> int:
-        return len(self.chunks)
-
-    def __iter__(self) -> Iterator[MOFlatFileFormatChunk]:  # type: ignore
-        return iter(self.chunks)
-
-    def __getitem__(self, item: int) -> MOFlatFileFormatChunk:
-        return self.chunks[item]
 
 
 class MOFlatFileFormat(MOFlatFileFormatImport):
