@@ -1,4 +1,8 @@
-Release type: major
+CHANGELOG
+=========
+
+2.0.0 - 2022-02-01
+------------------
 
 [#45480] Add autopub
 [#45480] Proper CLI
@@ -10,3 +14,4 @@ Release type: major
 [#45480] Use SemanticVersion from ra-utils
 [#45480] Bump version
 [#45480] Update dependencies
+

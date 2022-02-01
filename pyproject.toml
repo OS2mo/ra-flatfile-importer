@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ra-flatfile-importer"
-version = "1.0.0"
+version = "2.0.0"
 description = "Flatfile importer for OS2mo"
 authors = ["Magenta <info@magenta.dk>"]
 license = "MPL-2.0"
