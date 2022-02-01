@@ -7,6 +7,11 @@ SPDX-License-Identifier: MPL-2.0
 CHANGELOG
 =========
 
+2.0.1 - 2022-02-01
+------------------
+
+Add copyright to changelog, I guess
+
 2.0.0 - 2022-02-01
 ------------------
 
