@@ -3,27 +3,29 @@
 # SPDX-FileCopyrightText: 2021 Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 # --------------------------------------------------------------------------------------
+from collections.abc import Iterator
 from itertools import chain
 from typing import Any
-from typing import Iterator
-from typing import List
 from typing import Optional
 
 from pydantic import validator
+from ra_utils.semantic_version_type import SemanticVersion
 from ramodels.mo import Employee
 from ramodels.mo import MOBase
 from ramodels.mo import OrganisationUnit
 from ramodels.mo.details import Address
+from ramodels.mo.details import Association
 from ramodels.mo.details import Engagement
-from ramodels.mo.details import EngagementAssociation
+from ramodels.mo.details import ITUser
+from ramodels.mo.details import Leave
 from ramodels.mo.details import Manager
+from ramodels.mo.details import Role
 
-from ra_flatfile_importer.semantic_version_type import SemanticVersion
 from ra_flatfile_importer.util import FrozenBaseModel
 
-__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.1.0")
-__supported_mo_fileformat_versions__: List[SemanticVersion] = list(
-    map(SemanticVersion, ["0.1.0"])
+__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.2.0")
+__supported_mo_fileformat_versions__: list[SemanticVersion] = list(
+    map(SemanticVersion, ["0.1.1", "0.2.0"])
 )
 assert (
     __mo_fileformat_version__ in __supported_mo_fileformat_versions__
@@ -39,12 +41,15 @@ class MOFlatFileFormatChunk(FrozenBaseModel):
     Minimal valid example is {}.
     """
 
-    org_units: Optional[List[OrganisationUnit]]
-    employees: Optional[List[Employee]]
-    engagements: Optional[List[Engagement]]
-    address: Optional[List[Address]]
-    manager: Optional[List[Manager]]
-    engagement_associations: Optional[List[EngagementAssociation]]
+    org_units: Optional[list[OrganisationUnit]]
+    employees: Optional[list[Employee]]
+    engagements: Optional[list[Engagement]]
+    address: Optional[list[Address]]
+    manager: Optional[list[Manager]]
+    associations: Optional[list[Association]]
+    roles: Optional[list[Role]]
+    leaves: Optional[list[Leave]]
+    it_users: Optional[list[ITUser]]
 
 
 class MOFlatFileFormatImport(FrozenBaseModel):
@@ -56,7 +61,8 @@ class MOFlatFileFormatImport(FrozenBaseModel):
     Minimal valid example is [].
     """
 
-    chunks: List[MOFlatFileFormatChunk]
+    chunks: list[MOFlatFileFormatChunk]
+    edits: list[MOFlatFileFormatChunk]
     version: SemanticVersion
 
     @validator("version", pre=True, always=True)
@@ -64,15 +70,6 @@ class MOFlatFileFormatImport(FrozenBaseModel):
         if v not in __supported_mo_fileformat_versions__:
             raise ValueError("fileformat version not supported")
         return v
-
-    def __len__(self) -> int:
-        return len(self.chunks)
-
-    def __iter__(self) -> Iterator[MOFlatFileFormatChunk]:  # type: ignore
-        return iter(self.chunks)
-
-    def __getitem__(self, item: int) -> MOFlatFileFormatChunk:
-        return self.chunks[item]
 
 
 class MOFlatFileFormat(MOFlatFileFormatImport):
@@ -95,5 +92,8 @@ def concat_chunk(chunk: MOFlatFileFormatChunk) -> Iterator[MOBase]:
         chunk.engagements or [],
         chunk.address or [],
         chunk.manager or [],
-        chunk.engagement_associations or [],
+        chunk.associations or [],
+        chunk.roles or [],
+        chunk.leaves or [],
+        chunk.it_users or [],
     )
