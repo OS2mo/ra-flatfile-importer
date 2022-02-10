@@ -587,7 +587,7 @@ headers = ["pydantic (>=1.8.2,<2.0.0)", "requests (>=2.26.0,<3.0.0)", "types-req
 
 [[package]]
 name = "raclients"
-version = "1.2.0"
+version = "1.2.1"
 description = "Clients for OS2mo/LoRa"
 category = "main"
 optional = false
@@ -602,14 +602,14 @@ jsonschema = ">=3.2.0,<4.0.0"
 more-itertools = ">=8.7.0,<9.0.0"
 pydantic = ">=1.9.0,<2.0.0"
 ra-utils = {version = ">=0.4.0,<0.5.0", extras = ["headers"]}
-ramodels = ">=5.1.0,<6.0.0"
+ramodels = ">=5.3.2,<6.0.0"
 structlog = ">=21.2.0,<22.0.0"
 tenacity = ">=8.0.1,<9.0.0"
 tqdm = ">=4.62.3,<5.0.0"
 
 [[package]]
 name = "ramodels"
-version = "5.2.0"
+version = "5.3.2"
 description = "Pydantic data models for OS2mo"
 category = "main"
 optional = false
@@ -822,7 +822,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d2a8237886f7a892c9827c2a591c56c604eef20eac1d0e869114dce8b6322817"
+content-hash = "7036fe775d63b00e5712f838a5abadb99d7040bb2a3d570a650e50a7baf40356"
 
 [metadata.files]
 anyio = [
@@ -1245,12 +1245,12 @@ ra-utils = [
     {file = "ra_utils-0.4.0-py3-none-any.whl", hash = "sha256:93441f4302710ff5f75d9e0451e6ead81186c2fd47124c879098216d4e5d5db4"},
 ]
 raclients = [
-    {file = "raclients-1.2.0-py3-none-any.whl", hash = "sha256:601cf1b23b7f78f5acd4df8b2cebcc2856e87a3058db627693048b0835f7ccca"},
-    {file = "raclients-1.2.0.tar.gz", hash = "sha256:9900f26b9c3a0f0510033300ba2e8ee28376527e48ec9038e99da076c2dfaa2f"},
+    {file = "raclients-1.2.1-py3-none-any.whl", hash = "sha256:4af5e9dacda149fa4fc21057f84bc5bb8ea03b3ae1fe227a6ccb15e76f5cee6a"},
+    {file = "raclients-1.2.1.tar.gz", hash = "sha256:ceb3d9cb3a23e2a58df7baa1f8b791c1000c18dcc00ad1ab325eeb47274f77c3"},
 ]
 ramodels = [
-    {file = "ramodels-5.2.0-py3-none-any.whl", hash = "sha256:5804e928578d908e53b7a01f0e0c4071c45dbf456062d3c7cb37180da45a6177"},
-    {file = "ramodels-5.2.0.tar.gz", hash = "sha256:1777c4c31682ddea0a2704879c253ddc1c7acd0dbe0a8c8d9a69406a8789f10a"},
+    {file = "ramodels-5.3.2-py3-none-any.whl", hash = "sha256:1ddeb63eb6ec0445ae0574a40df7d606d5f47e8d5031b539ef170a59f8594c84"},
+    {file = "ramodels-5.3.2.tar.gz", hash = "sha256:ba37baa23d7bfa0d3d18de96a5a3e7abf8b0baa5211e338c13d86ce46a43b515"},
 ]
 reorder-python-imports = [
     {file = "reorder_python_imports-2.7.1-py2.py3-none-any.whl", hash = "sha256:5477c008cd7a5f2dbe32a35e90d74b5a3427468731441f033034310e427143a3"},
