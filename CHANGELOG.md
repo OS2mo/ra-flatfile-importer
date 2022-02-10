@@ -7,6 +7,11 @@ SPDX-License-Identifier: MPL-2.0
 CHANGELOG
 =========
 
+2.1.0 - 2022-02-10
+------------------
+
+[#48565] Add support for KLEs
+
 2.0.1 - 2022-02-01
 ------------------
 
