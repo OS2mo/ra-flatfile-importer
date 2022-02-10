@@ -17,7 +17,7 @@ from ramodels.mo.details import Address
 from ramodels.mo.details import Association
 from ramodels.mo.details import Engagement
 from ramodels.mo.details import ITUser
-from ramodels.mo.details import KLEWrite
+from ramodels.mo.details import KLE
 from ramodels.mo.details import Leave
 from ramodels.mo.details import Manager
 from ramodels.mo.details import Role
@@ -51,7 +51,7 @@ class MOFlatFileFormatChunk(FrozenBaseModel):
     roles: Optional[list[Role]]
     leaves: Optional[list[Leave]]
     it_users: Optional[list[ITUser]]
-    kles: Optional[list[KLEWrite]]
+    kles: Optional[list[KLE]]
 
 
 class MOFlatFileFormatImport(FrozenBaseModel):
