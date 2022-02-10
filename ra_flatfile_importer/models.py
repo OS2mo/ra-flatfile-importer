@@ -17,15 +17,16 @@ from ramodels.mo.details import Address
 from ramodels.mo.details import Association
 from ramodels.mo.details import Engagement
 from ramodels.mo.details import ITUser
+from ramodels.mo.details import KLEWrite
 from ramodels.mo.details import Leave
 from ramodels.mo.details import Manager
 from ramodels.mo.details import Role
 
 from ra_flatfile_importer.util import FrozenBaseModel
 
-__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.2.0")
+__mo_fileformat_version__: SemanticVersion = SemanticVersion("0.3.0")
 __supported_mo_fileformat_versions__: list[SemanticVersion] = list(
-    map(SemanticVersion, ["0.1.1", "0.2.0"])
+    map(SemanticVersion, ["0.1.1", "0.2.0", "0.3.0"])
 )
 assert (
     __mo_fileformat_version__ in __supported_mo_fileformat_versions__
@@ -50,6 +51,7 @@ class MOFlatFileFormatChunk(FrozenBaseModel):
     roles: Optional[list[Role]]
     leaves: Optional[list[Leave]]
     it_users: Optional[list[ITUser]]
+    kles: Optional[list[KLEWrite]]
 
 
 class MOFlatFileFormatImport(FrozenBaseModel):
@@ -96,4 +98,5 @@ def concat_chunk(chunk: MOFlatFileFormatChunk) -> Iterator[MOBase]:
         chunk.roles or [],
         chunk.leaves or [],
         chunk.it_users or [],
+        chunk.kles or [],
     )
